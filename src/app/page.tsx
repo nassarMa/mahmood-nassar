@@ -4,12 +4,13 @@ import { StatusBadge } from '@/components/ui/StatusBadge'
 import { LinkArrow } from '@/components/ui/LinkArrow'
 import { stage } from '@/content/stages'
 import { threads } from '@/content/threads'
+import { portraitSrc } from '@/lib/portrait'
 
 export default function Home() {
   const building = stage('building')
   return (
     <>
-      <Hero threadCount={threads.length} />
+      <Hero threadCount={threads.length} portraitSrc={portraitSrc()} />
       <main id="main">
         <Section id={building.id} eyebrow={building.eyebrow} label={building.label} title="Four threads, one loop.">
           <StatusBadge status="building" />
