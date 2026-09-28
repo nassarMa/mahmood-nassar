@@ -2,9 +2,14 @@
 
 import { useEffect, useState } from 'react'
 
+/** Fraction of the viewport height a stage's top must pass to become active. */
+const READ_LINE = 0.45
+const HERO_END = 200
+
 /**
- * Reports which `[data-stage]` section is in the reading band (roughly the
- * middle of the viewport) and whether the reader has scrolled past the hero.
+ * Reports which `[data-stage]` section is being read — the last one whose top
+ * has crossed the reading line — and whether the reader has left the hero.
+ * Scroll-driven and rAF-throttled: short sections and hash loads both work.
  */
 export function useActiveStage() {
   const [activeId, setActiveId] = useState<string | null>(null)
@@ -12,32 +17,34 @@ export function useActiveStage() {
 
   useEffect(() => {
     const els = Array.from(document.querySelectorAll<HTMLElement>('[data-stage]'))
-    const visible = new Map<string, number>()
+    let frame = 0
 
-    const observer = new IntersectionObserver(
-      (entries) => {
-        for (const e of entries) {
-          const id = (e.target as HTMLElement).dataset.stage!
-          if (e.isIntersecting) visible.set(id, e.boundingClientRect.top)
-          else visible.delete(id)
-        }
-        if (visible.size === 0) return
-        // The intersecting stage closest to the top of the band wins.
-        const [next] = [...visible.entries()].sort((a, b) => a[1] - b[1])
-        setActiveId(next[0])
-      },
-      { rootMargin: '-40% 0px -55% 0px', threshold: 0 },
-    )
-    els.forEach((el) => observer.observe(el))
+    const measure = () => {
+      frame = 0
+      const line = window.innerHeight * READ_LINE
+      let current: string | null = null
+      for (const el of els) {
+        if (el.getBoundingClientRect().top <= line) current = el.dataset.stage!
+        else break
+      }
+      // At the end of the document the last stage is the one being read, even
+      // if the page is too short for its top to reach the line.
+      const atBottom = window.scrollY + window.innerHeight >= document.documentElement.scrollHeight - 2
+      if (atBottom && els.length) current = els[els.length - 1].dataset.stage!
+      setActiveId(current)
+      setPastHero(window.scrollY > HERO_END)
+    }
+    const schedule = () => {
+      if (!frame) frame = requestAnimationFrame(measure)
+    }
 
-    const onScroll = () => setPastHero(window.scrollY > 200)
-    const frame = requestAnimationFrame(onScroll)
-    window.addEventListener('scroll', onScroll, { passive: true })
-
+    schedule()
+    window.addEventListener('scroll', schedule, { passive: true })
+    window.addEventListener('resize', schedule)
     return () => {
-      observer.disconnect()
-      cancelAnimationFrame(frame)
-      window.removeEventListener('scroll', onScroll)
+      if (frame) cancelAnimationFrame(frame)
+      window.removeEventListener('scroll', schedule)
+      window.removeEventListener('resize', schedule)
     }
   }, [])
 

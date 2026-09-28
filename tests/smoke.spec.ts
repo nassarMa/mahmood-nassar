@@ -1,5 +1,16 @@
 import { test, expect } from '@playwright/test'
 
+test.describe('hero', () => {
+  test('says who Mahmood is within the first screen', async ({ page }) => {
+    await page.goto('/')
+    await expect(page.getByRole('heading', { level: 1 })).toContainText(/Engineer/)
+    await expect(page.getByText('Engineer by background. Builder by nature.')).toBeVisible()
+    await expect(page.getByText(/4 active threads/)).toBeVisible()
+    await expect(page.getByTestId('portrait')).toBeVisible()
+    await expect(page.getByRole('link', { name: /see what i.m building/i })).toHaveAttribute('href', '#building')
+  })
+})
+
 test.describe('pipeline rail', () => {
   test('lights the stage in view', async ({ page }) => {
     await page.goto('/')
