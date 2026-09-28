@@ -1,0 +1,63 @@
+@import 'tailwindcss';
+
+@theme {
+  --color-bg: #0f0e0c;
+  --color-surface: #161513;
+  --color-line: rgba(237, 232, 223, 0.08);
+  --color-line-strong: rgba(237, 232, 223, 0.16);
+  --color-text: #ede8df;
+  --color-muted: #a39e94;
+  --color-faint: #6b665e;
+  --color-accent: #e0863c;
+
+  --font-display: var(--font-display), Georgia, serif;
+  --font-sans: var(--font-sans), system-ui, sans-serif;
+  --font-mono: var(--font-mono), ui-monospace, monospace;
+
+  --text-display: clamp(3.5rem, 6vw + 1rem, 7.5rem);
+  --text-title: clamp(2rem, 2.5vw + 1rem, 3rem);
+}
+
+:root {
+  color-scheme: dark;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  @apply bg-bg text-text font-sans antialiased;
+  font-size: 17px;
+  line-height: 1.6;
+}
+
+::selection {
+  background: color-mix(in oklab, var(--color-accent) 40%, transparent);
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 3px;
+}
+
+.eyebrow {
+  @apply font-mono text-[12px] uppercase tracking-[0.18em] text-faint;
+}
+
+.hairline {
+  border-color: var(--color-line);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
