@@ -2,8 +2,6 @@ import type { Metadata } from 'next'
 import './globals.css'
 import { fraunces, geist, geistMono } from '@/lib/fonts'
 import { site } from '@/content/site'
-import { stages } from '@/content/stages'
-import { PipelineRail } from '@/components/pipeline/PipelineRail'
 import { MotionProvider } from '@/components/ui/MotionProvider'
 
 export const metadata: Metadata = {
@@ -28,7 +26,7 @@ const person = {
   '@type': 'Person',
   name: site.name,
   url: site.url,
-  jobTitle: 'Software Engineer',
+  jobTitle: site.jobTitle,
   description: site.description,
   sameAs: Object.values(site.links).filter((v): v is string => typeof v === 'string' && v.startsWith('http')),
 }
@@ -43,10 +41,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         >
           Skip to content
         </a>
-        <MotionProvider>
-          <PipelineRail stages={stages} />
-          {children}
-        </MotionProvider>
+        <MotionProvider>{children}</MotionProvider>
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(person) }} />
       </body>
     </html>

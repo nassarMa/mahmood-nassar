@@ -1,6 +1,6 @@
 'use client'
 
-import { m, useReducedMotion } from 'motion/react'
+import { m } from 'motion/react'
 import { reveal, viewport } from '@/lib/motion'
 
 type Props = {
@@ -9,11 +9,15 @@ type Props = {
   className?: string
 }
 
+/**
+ * Fade-and-rise once on entering the viewport. The rendered tree never
+ * depends on the reduced-motion setting (that would break hydration); a CSS
+ * rule on `[data-reveal]` forces the final state when motion is reduced.
+ */
 export function Reveal({ children, delay = 0, className }: Props) {
-  const reduced = useReducedMotion()
-  if (reduced) return <div className={className}>{children}</div>
   return (
     <m.div
+      data-reveal
       className={className}
       variants={reveal}
       initial="hidden"

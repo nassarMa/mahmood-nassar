@@ -3,6 +3,7 @@ import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { MDXRemote } from 'next-mdx-remote/rsc'
 import { Prose } from '@/components/notes/Prose'
+import { site } from '@/content/site'
 import { formatDate, getNote, getNotes } from '@/lib/notes'
 
 type Params = { slug: string }
@@ -15,11 +16,21 @@ export async function generateMetadata({ params }: { params: Promise<Params> }):
   const { slug } = await params
   const note = getNote(slug)
   if (!note) return {}
+  // `openGraph` replaces the layout's object wholesale, so every field is restated here.
   return {
     title: note.meta.title,
     description: note.meta.summary,
     alternates: { canonical: `/notes/${slug}` },
-    openGraph: { type: 'article', publishedTime: note.meta.date, title: note.meta.title, description: note.meta.summary },
+    openGraph: {
+      type: 'article',
+      siteName: site.name,
+      url: `/notes/${slug}`,
+      title: note.meta.title,
+      description: note.meta.summary,
+      publishedTime: note.meta.date,
+      images: ['/opengraph-image'],
+    },
+    twitter: { card: 'summary_large_image', title: note.meta.title, description: note.meta.summary },
   }
 }
 

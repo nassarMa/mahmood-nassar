@@ -1,5 +1,6 @@
 import { ImageResponse } from 'next/og'
 import { site } from '@/content/site'
+import { hero } from '@/content/hero'
 import { loadGoogleFont } from '@/lib/og-font'
 
 export const alt = `${site.name} — ${site.positioning}`
@@ -33,21 +34,21 @@ export default async function OpenGraphImage() {
           <span>{site.name.toUpperCase()}</span>
           <span style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
             <span style={{ width: 12, height: 12, borderRadius: 999, background: '#e0863c' }} />
-            BUILDING
+            {site.statusWord.toUpperCase()}
           </span>
         </div>
 
         <div style={{ display: 'flex', flexDirection: 'column' }}>
-          <div style={{ fontSize: 104, lineHeight: 1, letterSpacing: -2, fontWeight: 300 }}>Engineer. Builder.</div>
+          <div style={{ fontSize: 104, lineHeight: 1, letterSpacing: -2, fontWeight: 300 }}>{hero.lines.slice(0, -1).join(' ')}</div>
           <div style={{ fontSize: 104, lineHeight: 1, letterSpacing: -2, fontWeight: 300, fontStyle: 'italic', color: '#a39e94' }}>
-            Experimenter.
+            {hero.lines[hero.lines.length - 1]}
           </div>
           <div style={{ marginTop: 36, fontSize: 30, color: '#ede8df', fontStyle: 'italic' }}>{site.positioning}</div>
         </div>
 
         <div style={{ display: 'flex', alignItems: 'center', width: '100%' }}>
           <div style={{ flex: 1, height: 1, background: 'rgba(237,232,223,0.18)' }} />
-          {['ENGINEERING', 'AI', 'PRODUCT', 'COMMUNITY'].map((w, i) => (
+          {hero.words.map((raw, i) => { const w = raw.toUpperCase(); return (
             <div key={w} style={{ display: 'flex', alignItems: 'center' }}>
               <div
                 style={{
@@ -62,7 +63,7 @@ export default async function OpenGraphImage() {
               <span style={{ margin: '0 18px', fontSize: 18, letterSpacing: 3, color: '#a39e94', fontFamily: 'monospace' }}>{w}</span>
               <div style={{ width: 48, height: 1, background: 'rgba(237,232,223,0.18)' }} />
             </div>
-          ))}
+          )})}
         </div>
       </div>
     ),

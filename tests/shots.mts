@@ -1,4 +1,4 @@
-// Dev helper: `pnpm tsx tests/shots.ts [out-dir]` screenshots the running site.
+// Dev helper: screenshots the running site at phone and desktop widths.
 import { chromium } from '@playwright/test'
 
 // Usage: tsx tests/shots.mts [out-dir] [path] [tag]

@@ -1,13 +1,15 @@
 'use client'
 
 import { useRef } from 'react'
-import { m, useReducedMotion, useScroll, useSpring } from 'motion/react'
+import { m, useScroll, useSpring } from 'motion/react'
 import type { Stage } from '@/content/types'
 
-/** The pipeline widening: a line drawn by scroll, stages beside it, questions where scope changed. */
+/**
+ * The pipeline widening: a line drawn by scroll, stages beside it, questions
+ * where scope changed. Under reduced motion CSS pins the line fully drawn.
+ */
 export function JourneyLine({ stages }: { stages: Stage[] }) {
   const ref = useRef<HTMLOListElement>(null)
-  const reduced = useReducedMotion()
   const { scrollYProgress } = useScroll({ target: ref, offset: ['start 80%', 'end 60%'] })
   const scaleY = useSpring(scrollYProgress, { stiffness: 80, damping: 24, mass: 0.4 })
 
@@ -16,8 +18,8 @@ export function JourneyLine({ stages }: { stages: Stage[] }) {
       <span aria-hidden className="absolute bottom-2 left-[3px] top-2 w-px bg-line" />
       <m.span
         aria-hidden
-        className="absolute bottom-2 left-[3px] top-2 w-px origin-top bg-accent/70"
-        style={{ scaleY: reduced ? 1 : scaleY }}
+        className="journey-progress absolute bottom-2 left-[3px] top-2 w-px origin-top bg-accent/70"
+        style={{ scaleY }}
       />
       <ol ref={ref} className="space-y-10 md:space-y-12">
         {stages.map((s, i) => (

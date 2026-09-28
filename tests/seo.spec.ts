@@ -13,6 +13,15 @@ test.describe('seo', () => {
     expect(JSON.parse(ld!)['@type']).toBe('Person')
   })
 
+  test('a shared note carries its own title, an image and a URL', async ({ page }) => {
+    await page.goto('/notes/fresh-job-data-is-hard')
+    await expect(page.locator('meta[property="og:title"]')).toHaveAttribute('content', /fresh job data/i)
+    await expect(page.locator('meta[property="og:image"]')).toHaveAttribute('content', /opengraph-image/)
+    await expect(page.locator('meta[property="og:url"]')).toHaveAttribute('content', /\/notes\/fresh-job-data-is-hard$/)
+    await expect(page.locator('meta[property="og:site_name"]')).toHaveAttribute('content', 'Mahmood Nassar')
+    await expect(page.locator('meta[name="twitter:title"]')).toHaveAttribute('content', /fresh job data/i)
+  })
+
   test('OG image, sitemap, robots and icon respond', async ({ request }) => {
     const og = await request.get('/opengraph-image')
     expect(og.status()).toBe(200)

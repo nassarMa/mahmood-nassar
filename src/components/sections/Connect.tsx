@@ -10,10 +10,10 @@ type Content = {
   channels: { key: Channel; label: string; hint: string }[]
 }
 
-type Props = { stage: StageInfo; content: Content; links: Record<Channel, string | null>; name: string }
+type Props = { stage: StageInfo; content: Content; links: Record<Channel, string | null>; name: string; footerNote: string }
 
 /** The human close: one question, four ways to answer it. Also the footer. */
-export function Connect({ stage, content, links, name }: Props) {
+export function Connect({ stage, content, links, name, footerNote }: Props) {
   return (
     <section
       id={stage.id}
@@ -47,7 +47,7 @@ export function Connect({ stage, content, links, name }: Props) {
         <p>
           © {new Date().getFullYear()} {name}
         </p>
-        <p>Built with Next.js · No trackers</p>
+        <p>{footerNote}</p>
       </footer>
     </section>
   )

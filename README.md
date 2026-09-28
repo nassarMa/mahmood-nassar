@@ -12,8 +12,9 @@ All copy lives in `src/content/`. Components never contain prose.
 
 | File | What it controls |
 | --- | --- |
-| `site.ts` | Name, positioning line, description, social links (`null` = "coming soon" placeholder) |
-| `stages.ts` | Section order, eyebrows and rail labels |
+| `site.ts` | Name, positioning line, description, footer note, social links (`null` = "coming soon" placeholder) |
+| `hero.ts` | Hero eyebrow, the three headline lines, the four routed words, CTA labels |
+| `stages.ts` | Section order, eyebrows, rail labels, section titles and intros, phone quick-nav |
 | `threads.ts` | The four "Currently building" threads |
 | `projects.ts` | Project stories (problem / thinking / build / tech / learning / status) |
 | `engineering.ts`, `stack.ts` | Engineering headline and the technology layers |

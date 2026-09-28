@@ -22,14 +22,46 @@ test.describe('whole page', () => {
     await expect(page.locator('nav[aria-label="Sections"]')).toHaveAttribute('data-active-stage', 'building')
   })
 
-  test('reduced motion renders everything in its final state', async ({ browser }) => {
+  test('reduced motion renders everything in its final state, without hydration errors', async ({ browser }) => {
     const ctx = await browser.newContext({ reducedMotion: 'reduce', viewport: { width: 390, height: 844 } })
     const page = await ctx.newPage()
+    const errors: string[] = []
+    page.on('pageerror', (e) => errors.push(e.message))
+    page.on('console', (m) => m.type() === 'error' && errors.push(m.text()))
     await page.goto('/')
-    const hidden = await page.locator('main [style*="opacity: 0"], main [style*="opacity:0"]').count()
-    expect(hidden).toBe(0)
+    await page.waitForTimeout(500)
+    // Every reveal wrapper is fully visible without scrolling anywhere.
+    const opacities = await page.locator('[data-reveal]').evaluateAll((els) => els.map((el) => getComputedStyle(el).opacity))
+    expect(opacities.length).toBeGreaterThan(5)
+    expect(opacities.every((o) => o === '1')).toBe(true)
     await expect(page.locator('#connect h2')).toBeVisible()
+    expect(errors).toEqual([])
     await ctx.close()
+  })
+
+  test('rail keeps working after client-side navigation and stays off notes pages', async ({ page }) => {
+    await page.goto('/')
+    await page.locator('#notes a[href="/notes"]').click()
+    await expect(page).toHaveURL(/\/notes$/)
+    await expect(page.locator('nav[aria-label="Sections"]')).toHaveCount(0)
+    await page.locator('[data-note]').first().locator('a').click()
+    await expect(page).toHaveURL(/\/notes\/[a-z0-9-]+$/)
+    await expect(page.locator('nav[aria-label="Sections"]')).toHaveCount(0)
+    await page.getByRole('link', { name: /field notes/i }).first().click()
+    await page.getByRole('link', { name: /mahmood nassar/i }).first().click()
+    await expect(page).toHaveURL(/\/$/)
+    await page.locator('#work').scrollIntoViewIfNeeded()
+    await expect(page.locator('nav[aria-label="Sections"]')).toHaveAttribute('data-active-stage', 'work')
+  })
+
+  test('keyboard focus never lands on the hidden rail', async ({ page, isMobile }) => {
+    test.skip(isMobile, 'rail markers are desktop-only')
+    await page.goto('/')
+    for (let i = 0; i < 6; i++) {
+      await page.keyboard.press('Tab')
+      const inRail = await page.evaluate(() => !!document.activeElement?.closest('nav[aria-label="Sections"]'))
+      expect(inRail, `tab stop ${i + 1} landed on the hidden rail`).toBe(false)
+    }
   })
 
   test('no horizontal overflow at 320px', async ({ browser }) => {
@@ -42,7 +74,7 @@ test.describe('whole page', () => {
   })
 
   test('axe reports no violations on home and a note', async ({ page }) => {
-    for (const path of ['/', '/notes/fresh-job-data-is-hard']) {
+    for (const path of ['/', '/notes', '/notes/fresh-job-data-is-hard']) {
       await page.goto(path)
       const { violations } = await new AxeBuilder({ page }).analyze()
       expect(violations.map((v) => `${v.id}: ${v.nodes.map((n) => n.target.join(' ')).join(', ')}`)).toEqual([])

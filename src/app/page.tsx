@@ -1,99 +1,76 @@
 import { Hero } from '@/components/hero/Hero'
+import { PipelineRail } from '@/components/pipeline/PipelineRail'
 import { Section } from '@/components/ui/Section'
+import { MobileNav } from '@/components/ui/MobileNav'
 import { CurrentlyBuilding } from '@/components/sections/CurrentlyBuilding'
 import { Work } from '@/components/sections/Work'
 import { Engineering } from '@/components/sections/Engineering'
 import { AI } from '@/components/sections/AI'
 import { Dafsha } from '@/components/sections/Dafsha'
 import { Journey } from '@/components/sections/Journey'
+import { Notes } from '@/components/sections/Notes'
 import { About } from '@/components/sections/About'
 import { Connect } from '@/components/sections/Connect'
-import { about } from '@/content/about'
-import { connect } from '@/content/connect'
+import { stage, stages } from '@/content/stages'
 import { site } from '@/content/site'
-import { dafsha } from '@/content/dafsha'
-import { journey } from '@/content/journey'
-import { stage } from '@/content/stages'
 import { threads } from '@/content/threads'
 import { projects } from '@/content/projects'
 import { stack } from '@/content/stack'
 import { agents } from '@/content/agents'
 import { engineering } from '@/content/engineering'
 import { ai } from '@/content/ai'
+import { dafsha } from '@/content/dafsha'
+import { journey } from '@/content/journey'
+import { about } from '@/content/about'
+import { connect } from '@/content/connect'
 import { portraitSrc } from '@/lib/portrait'
-import { Notes } from '@/components/sections/Notes'
-import { MobileNav } from '@/components/ui/MobileNav'
 import { getNotes } from '@/lib/notes'
 
+/** A stage rendered with the standard header column. */
+function Stage({ id, children }: { id: Parameters<typeof stage>[0]; children: React.ReactNode }) {
+  const s = stage(id)
+  return (
+    <Section id={s.id} eyebrow={s.eyebrow} label={s.label} title={s.title} intro={s.intro || undefined}>
+      {children}
+    </Section>
+  )
+}
+
 export default function Home() {
-  const building = stage('building')
-  const work = stage('work')
-  const eng = stage('engineering')
-  const aiStage = stage('ai')
-  const journeyStage = stage('journey')
-  const aboutStage = stage('about')
-  const notesStage = stage('notes')
+  const notes = stage('notes')
   return (
     <>
       <Hero threadCount={threads.length} portraitSrc={portraitSrc()} />
       <main id="main">
-        <Section
-          id={building.id}
-          eyebrow={building.eyebrow}
-          label={building.label}
-          title="Four threads, one loop."
-          intro="Everything I work on runs through the same loop: problem, research, architecture, prototype, automation, product, feedback, iteration. These are the threads on it right now."
-        >
+        <Stage id="building">
           <CurrentlyBuilding threads={threads} />
-        </Section>
-
-        <Section
-          id={work.id}
-          eyebrow={work.eyebrow}
-          label={work.label}
-          title="Stories, not screenshots."
-          intro="Each piece of work told the way it happened: the problem I noticed, how I thought about it, what I built, and what I learned. Statuses are honest."
-        >
+        </Stage>
+        <Stage id="work">
           <Work projects={projects} />
-        </Section>
-
-        <Section id={eng.id} eyebrow={eng.eyebrow} label={eng.label} title={engineering.title} intro={engineering.intro}>
+        </Stage>
+        <Stage id="engineering">
           <Engineering layers={stack} note={engineering.note} />
-        </Section>
-
-        <Section id={aiStage.id} eyebrow={aiStage.eyebrow} label={aiStage.label} title={ai.title} intro={ai.intro}>
+        </Stage>
+        <Stage id="ai">
           <AI flow={ai.flow} agents={agents} />
-        </Section>
+        </Stage>
 
         <Dafsha stage={stage('dafsha')} content={dafsha} />
 
-        <Section
-          id={journeyStage.id}
-          eyebrow={journeyStage.eyebrow}
-          label={journeyStage.label}
-          title="Expanding scope."
-          intro="Not a résumé. The same person asking bigger questions: from how to test a thing, to how to build the system, to which problem is worth solving at all."
-        >
+        <Stage id="journey">
           <Journey stages={journey} />
-        </Section>
-
-        <Section
-          id={notesStage.id}
-          eyebrow={notesStage.eyebrow}
-          label={notesStage.label}
-          title="Notes from the build."
-          intro="Things I learned, things I’m building, AI experiments, product lessons and community observations. Short, honest, occasionally wrong."
-        >
-          <Notes notes={getNotes().slice(0, 3)} />
-        </Section>
-
-        <Section id={aboutStage.id} eyebrow={aboutStage.eyebrow} label={aboutStage.label} title="Between the idea and the system.">
+        </Stage>
+        <Stage id="notes">
+          <Notes notes={getNotes().slice(0, 3)} more={notes.more ?? 'All notes'} />
+        </Stage>
+        <Stage id="about">
           <About content={about} />
-        </Section>
+        </Stage>
 
-        <Connect stage={stage('connect')} content={connect} links={site.links} name={site.name} />
+        <Connect stage={stage('connect')} content={connect} links={site.links} name={site.name} footerNote={site.footerNote} />
       </main>
-      <MobileNav />
+      <PipelineRail stages={stages} />
+      <MobileNav items={stages.filter((s) => s.nav)} />
     </>
   )
 }

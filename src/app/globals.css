@@ -169,6 +169,14 @@ body {
   html {
     scroll-behavior: auto;
   }
+  /* Final states, regardless of what JS has or hasn't done yet. */
+  [data-reveal] {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+  .journey-progress {
+    transform: none !important;
+  }
   *,
   *::before,
   *::after {

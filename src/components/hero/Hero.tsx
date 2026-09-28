@@ -1,13 +1,14 @@
 import { site } from '@/content/site'
+import { hero } from '@/content/hero'
 import { Portrait } from './Portrait'
 import { RoutingDiagram } from './RoutingDiagram'
 import { StatusChip } from './StatusChip'
 
-const WORDS = ['Engineering', 'AI', 'Product', 'Community'] as const
-
 type Props = { portraitSrc?: string; threadCount: number }
 
 export function Hero({ portraitSrc, threadCount }: Props) {
+  const [first, second, last] = hero.lines
+  const [e1, e2, e3] = hero.eyebrow
   return (
     <header className="hero-grid relative flex min-h-[100svh] flex-col border-b hairline">
       <div className="mx-auto flex w-full max-w-[1200px] flex-wrap items-center justify-between gap-x-4 gap-y-3 px-4 pt-6 md:px-8 md:pt-8">
@@ -18,14 +19,14 @@ export function Hero({ portraitSrc, threadCount }: Props) {
       <div className="mx-auto grid w-full max-w-[1200px] flex-1 grid-cols-1 items-center gap-10 px-4 pb-12 pt-14 md:grid-cols-12 md:gap-8 md:px-8 md:pt-10">
         <div className="order-2 md:order-1 md:col-span-7">
           <p className="eyebrow">
-            Engineer · builder · <span className="whitespace-nowrap">founder-in-progress</span>
+            {e1} · {e2} · <span className="whitespace-nowrap">{e3}</span>
           </p>
           <h1 className="mt-6 font-display text-[length:var(--text-display)] font-light leading-[0.95] tracking-[-0.02em]">
-            Engineer.
+            {first}
             <br />
-            Builder.
+            {second}
             <br />
-            <em className="italic text-muted">Experimenter.</em>
+            <em className="italic text-muted">{last}</em>
           </h1>
           <p className="mt-8 max-w-[26ch] font-display text-[clamp(1.35rem,1.2vw+1rem,1.75rem)] font-light italic leading-snug">
             {site.positioning}
@@ -36,13 +37,13 @@ export function Hero({ portraitSrc, threadCount }: Props) {
               href="#building"
               className="inline-flex items-center justify-center rounded-full bg-text px-6 py-3 font-mono text-[13px] uppercase tracking-[0.12em] text-bg transition-colors hover:bg-accent"
             >
-              See what I&apos;m building
+              {hero.cta.primary}
             </a>
             <a
               href="#connect"
               className="inline-flex items-center justify-center rounded-full border border-line-strong px-6 py-3 font-mono text-[13px] uppercase tracking-[0.12em] text-text transition-colors hover:border-accent hover:text-accent"
             >
-              Connect with me
+              {hero.cta.secondary}
             </a>
           </div>
         </div>
@@ -55,7 +56,7 @@ export function Hero({ portraitSrc, threadCount }: Props) {
       </div>
 
       <div className="mx-auto w-full max-w-[1200px] px-4 pb-10 md:px-8">
-        <RoutingDiagram words={WORDS.map((w) => w.toUpperCase())} />
+        <RoutingDiagram words={hero.words.map((w) => w.toUpperCase())} />
       </div>
     </header>
   )

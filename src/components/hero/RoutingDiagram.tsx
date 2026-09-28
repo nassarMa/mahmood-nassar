@@ -1,12 +1,9 @@
-'use client'
-
-import { useReducedMotion } from 'motion/react'
 import { Packet } from '@/components/pipeline/Packet'
 
 const W = 1200
 const H = 150
 // Node x-positions along the band; the path dips between them so it reads as a
-// route, not a ruler. The final leg drops off the bottom-left towards the rail.
+// route, not a ruler. The final leg runs off the right edge.
 const NODES = [140, 460, 780, 1100]
 const Y = 70
 const PATH = [
@@ -19,16 +16,15 @@ const PATH = [
 ].join(' ')
 const NODE_Y = [Y, Y + 34, Y - 30, Y + 20]
 
+/**
+ * The four fields as nodes on one route. Server-rendered: packets are SMIL,
+ * and the reduced-motion alternative is toggled purely in CSS so the markup
+ * is identical on server and client.
+ */
 export function RoutingDiagram({ words }: { words: readonly string[] }) {
-  const reduced = useReducedMotion()
   return (
     <>
-      <svg
-        viewBox={`0 0 ${W} ${H}`}
-        className="hidden w-full md:block"
-        aria-hidden
-        fill="none"
-      >
+      <svg viewBox={`0 0 ${W} ${H}`} className="hidden w-full md:block" aria-hidden fill="none">
         <path id="hero-route" d={PATH} stroke="var(--color-line-strong)" strokeWidth={1} />
         {words.map((w, i) => (
           <g key={w} transform={`translate(${NODES[i]} ${NODE_Y[i]})`}>
@@ -45,15 +41,12 @@ export function RoutingDiagram({ words }: { words: readonly string[] }) {
             </text>
           </g>
         ))}
-        {reduced ? (
-          <circle cx={NODES[1]} cy={NODE_Y[1]} r={3} fill="var(--color-accent)" />
-        ) : (
-          <>
-            <Packet pathId="hero-route" dur="9s" begin="0s" />
-            <Packet pathId="hero-route" dur="9s" begin="-3s" opacity={0.6} r={2.5} />
-            <Packet pathId="hero-route" dur="9s" begin="-6s" opacity={0.35} r={2} />
-          </>
-        )}
+        <g className="motion-reduce:hidden">
+          <Packet pathId="hero-route" dur="9s" begin="0s" />
+          <Packet pathId="hero-route" dur="9s" begin="-3s" opacity={0.6} r={2.5} />
+          <Packet pathId="hero-route" dur="9s" begin="-6s" opacity={0.35} r={2} />
+        </g>
+        <circle className="motion-safe:hidden" cx={NODES[1]} cy={NODE_Y[1]} r={3} fill="var(--color-accent)" />
       </svg>
 
       {/* Phone: the same four nodes on a straight hairline; the rail continues it. */}
@@ -64,7 +57,7 @@ export function RoutingDiagram({ words }: { words: readonly string[] }) {
             <span
               aria-hidden
               className={`block h-[7px] w-[7px] rounded-full border ${
-                i === 1 && !reduced ? 'border-accent bg-accent' : 'border-muted bg-bg'
+                i === 1 ? 'border-accent bg-accent' : 'border-muted bg-bg'
               }`}
             />
             <span className="font-mono text-[10px] uppercase tracking-[0.16em] text-muted">{w}</span>
