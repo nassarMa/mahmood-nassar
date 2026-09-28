@@ -2,6 +2,8 @@ import type { Metadata } from 'next'
 import './globals.css'
 import { fraunces, geist, geistMono } from '@/lib/fonts'
 import { site } from '@/content/site'
+import { PipelineRail } from '@/components/pipeline/PipelineRail'
+import { stages } from '@/content/stages'
 
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),
@@ -19,6 +21,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         >
           Skip to content
         </a>
+        <PipelineRail stages={stages} />
         {children}
       </body>
     </html>
