@@ -55,6 +55,28 @@ test.describe('ai', () => {
   })
 })
 
+test.describe('dafsha', () => {
+  test('reads as a community section with no frozen numbers', async ({ page }) => {
+    await page.goto('/')
+    const s = page.locator('#dafsha')
+    await expect(s).toContainText('Technology matters most when it helps people move forward.')
+    await expect(s).toContainText(/Arabic-speaking/)
+    await expect(s).toContainText(/hundreds of/i)
+    expect(await s.textContent()).not.toMatch(/\b\d{3,}\b/)
+  })
+})
+
+test.describe('journey', () => {
+  test('shows seven stages of expanding scope with three questions', async ({ page }) => {
+    await page.goto('/')
+    const stages = page.locator('#journey [data-journey-stage]')
+    await expect(stages).toHaveCount(7)
+    await expect(stages.first()).toContainText('Software engineering')
+    await expect(stages.last()).toContainText('Entrepreneurship')
+    await expect(page.locator('#journey [data-journey-question]')).toHaveCount(3)
+  })
+})
+
 test.describe('pipeline rail', () => {
   test('lights the stage in view', async ({ page }) => {
     await page.goto('/')

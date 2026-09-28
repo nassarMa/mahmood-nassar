@@ -4,6 +4,10 @@ import { CurrentlyBuilding } from '@/components/sections/CurrentlyBuilding'
 import { Work } from '@/components/sections/Work'
 import { Engineering } from '@/components/sections/Engineering'
 import { AI } from '@/components/sections/AI'
+import { Dafsha } from '@/components/sections/Dafsha'
+import { Journey } from '@/components/sections/Journey'
+import { dafsha } from '@/content/dafsha'
+import { journey } from '@/content/journey'
 import { stage } from '@/content/stages'
 import { threads } from '@/content/threads'
 import { projects } from '@/content/projects'
@@ -18,6 +22,7 @@ export default function Home() {
   const work = stage('work')
   const eng = stage('engineering')
   const aiStage = stage('ai')
+  const journeyStage = stage('journey')
   return (
     <>
       <Hero threadCount={threads.length} portraitSrc={portraitSrc()} />
@@ -48,6 +53,18 @@ export default function Home() {
 
         <Section id={aiStage.id} eyebrow={aiStage.eyebrow} label={aiStage.label} title={ai.title} intro={ai.intro}>
           <AI flow={ai.flow} agents={agents} />
+        </Section>
+
+        <Dafsha stage={stage('dafsha')} content={dafsha} />
+
+        <Section
+          id={journeyStage.id}
+          eyebrow={journeyStage.eyebrow}
+          label={journeyStage.label}
+          title="Expanding scope."
+          intro="Not a résumé. The same person asking bigger questions: from how to test a thing, to how to build the system, to which problem is worth solving at all."
+        >
+          <Journey stages={journey} />
         </Section>
       </main>
     </>
