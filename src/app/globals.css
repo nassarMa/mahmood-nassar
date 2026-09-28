@@ -62,6 +62,17 @@ body {
   }
 }
 
+/* A packet travelling down a vertical line (AI flow). */
+@keyframes packet-drop {
+  0% { top: 0; opacity: 0; }
+  8% { opacity: 1; }
+  92% { opacity: 1; }
+  100% { top: 100%; opacity: 0; }
+}
+.packet-drop {
+  animation: packet-drop 6s linear infinite;
+}
+
 /* Faint drafting grid, hero only, fading towards the bottom. */
 .hero-grid::before {
   content: '';

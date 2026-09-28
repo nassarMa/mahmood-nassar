@@ -20,8 +20,8 @@ export function StageMarker({ id, label, active }: Props) {
       />
       <span
         aria-hidden
-        className={`eyebrow pointer-events-none absolute left-5 whitespace-nowrap transition-opacity duration-200 ${
-          active ? 'text-text opacity-100' : 'opacity-0 group-hover:opacity-100'
+        className={`eyebrow pointer-events-none absolute left-5 whitespace-nowrap bg-bg px-1 opacity-0 transition-opacity duration-200 group-hover:opacity-100 group-focus-visible:opacity-100 ${
+          active ? 'text-text' : ''
         }`}
       >
         {label}

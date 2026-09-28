@@ -25,6 +25,8 @@ for (const [name, viewport] of [
   await page.screenshot({ path: `${out}/${name}-full.png`, fullPage: true })
   for (const el of await page.locator('[data-stage]').all()) {
     const id = await el.getAttribute('data-stage')
+    await el.scrollIntoViewIfNeeded()
+    await page.waitForTimeout(800)
     await el.screenshot({ path: `${out}/${name}-${id}.png` })
   }
   await page.close()

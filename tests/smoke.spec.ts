@@ -34,6 +34,27 @@ test.describe('selected work', () => {
   })
 })
 
+test.describe('engineering', () => {
+  test('maps technologies into four layers, no skill bars', async ({ page }) => {
+    await page.goto('/')
+    const layers = page.locator('#engineering [data-layer]')
+    await expect(layers).toHaveCount(4)
+    await expect(layers.first()).toContainText('Execution')
+    await expect(page.locator('#engineering progress, #engineering [role="progressbar"]')).toHaveCount(0)
+  })
+})
+
+test.describe('ai', () => {
+  test('shows the human → agent → tools → systems → outcome flow with agent kinds', async ({ page }) => {
+    await page.goto('/')
+    const flow = page.locator('#ai [data-flow-node]')
+    await expect(flow).toHaveCount(5)
+    await expect(flow.first()).toContainText('Human')
+    await expect(flow.last()).toContainText('Outcome')
+    await expect(page.locator('#ai [data-agent]')).toHaveCount(7)
+  })
+})
+
 test.describe('pipeline rail', () => {
   test('lights the stage in view', async ({ page }) => {
     await page.goto('/')

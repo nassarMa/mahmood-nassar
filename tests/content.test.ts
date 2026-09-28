@@ -7,11 +7,13 @@ import { agents } from '../src/content/agents'
 import { about } from '../src/content/about'
 import { dafsha } from '../src/content/dafsha'
 import { site } from '../src/content/site'
+import { engineering } from '../src/content/engineering'
+import { ai } from '../src/content/ai'
 
 const BANNED =
   /\b(visionary|thought leader|disruptive|world-class|serial entrepreneur|ai expert|industry leader|passionate|enthusiast|innovative|results-driven)\b/i
 
-const all = JSON.stringify({ threads, projects, journey, stack, agents, about, dafsha, site })
+const all = JSON.stringify({ threads, projects, journey, stack, agents, about, dafsha, site, engineering, ai })
 
 assert.ok(!BANNED.test(all), `banned word found: ${all.match(BANNED)?.[0]}`)
 
