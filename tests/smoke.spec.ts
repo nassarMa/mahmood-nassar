@@ -77,6 +77,23 @@ test.describe('journey', () => {
   })
 })
 
+test.describe('about + connect', () => {
+  test('about is short and personal', async ({ page }) => {
+    await page.goto('/')
+    const s = page.locator('#about')
+    await expect(s).toContainText('I’m interested in the space between an idea and a working system.')
+    await expect(s.locator('p:not(.eyebrow)')).toHaveCount(5) // lead + 4 paragraphs
+  })
+
+  test('null links render placeholders, never bad hrefs', async ({ page }) => {
+    await page.goto('/')
+    const bad = await page.locator('a[href="null"], a[href="#"], a[href=""]').count()
+    expect(bad).toBe(0)
+    await expect(page.locator('#connect')).toContainText('Building something interesting?')
+    await expect(page.getByTestId('channel-placeholder')).toHaveCount(4)
+  })
+})
+
 test.describe('pipeline rail', () => {
   test('lights the stage in view', async ({ page }) => {
     await page.goto('/')

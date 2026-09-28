@@ -6,6 +6,11 @@ import { Engineering } from '@/components/sections/Engineering'
 import { AI } from '@/components/sections/AI'
 import { Dafsha } from '@/components/sections/Dafsha'
 import { Journey } from '@/components/sections/Journey'
+import { About } from '@/components/sections/About'
+import { Connect } from '@/components/sections/Connect'
+import { about } from '@/content/about'
+import { connect } from '@/content/connect'
+import { site } from '@/content/site'
 import { dafsha } from '@/content/dafsha'
 import { journey } from '@/content/journey'
 import { stage } from '@/content/stages'
@@ -23,6 +28,7 @@ export default function Home() {
   const eng = stage('engineering')
   const aiStage = stage('ai')
   const journeyStage = stage('journey')
+  const aboutStage = stage('about')
   return (
     <>
       <Hero threadCount={threads.length} portraitSrc={portraitSrc()} />
@@ -66,6 +72,12 @@ export default function Home() {
         >
           <Journey stages={journey} />
         </Section>
+
+        <Section id={aboutStage.id} eyebrow={aboutStage.eyebrow} label={aboutStage.label} title="Between the idea and the system.">
+          <About content={about} />
+        </Section>
+
+        <Connect stage={stage('connect')} content={connect} links={site.links} name={site.name} />
       </main>
     </>
   )
