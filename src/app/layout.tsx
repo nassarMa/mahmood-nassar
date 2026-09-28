@@ -4,6 +4,7 @@ import { fraunces, geist, geistMono } from '@/lib/fonts'
 import { site } from '@/content/site'
 import { stages } from '@/content/stages'
 import { PipelineRail } from '@/components/pipeline/PipelineRail'
+import { MotionProvider } from '@/components/ui/MotionProvider'
 
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),
@@ -42,8 +43,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         >
           Skip to content
         </a>
-        <PipelineRail stages={stages} />
-        {children}
+        <MotionProvider>
+          <PipelineRail stages={stages} />
+          {children}
+        </MotionProvider>
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(person) }} />
       </body>
     </html>

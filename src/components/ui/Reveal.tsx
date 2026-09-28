@@ -1,6 +1,6 @@
 'use client'
 
-import { motion, useReducedMotion } from 'motion/react'
+import { m, useReducedMotion } from 'motion/react'
 import { reveal, viewport } from '@/lib/motion'
 
 type Props = {
@@ -13,7 +13,7 @@ export function Reveal({ children, delay = 0, className }: Props) {
   const reduced = useReducedMotion()
   if (reduced) return <div className={className}>{children}</div>
   return (
-    <motion.div
+    <m.div
       className={className}
       variants={reveal}
       initial="hidden"
@@ -22,6 +22,6 @@ export function Reveal({ children, delay = 0, className }: Props) {
       transition={{ delay }}
     >
       {children}
-    </motion.div>
+    </m.div>
   )
 }

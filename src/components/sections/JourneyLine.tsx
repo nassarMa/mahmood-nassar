@@ -1,7 +1,7 @@
 'use client'
 
 import { useRef } from 'react'
-import { motion, useReducedMotion, useScroll, useSpring } from 'motion/react'
+import { m, useReducedMotion, useScroll, useSpring } from 'motion/react'
 import type { Stage } from '@/content/types'
 
 /** The pipeline widening: a line drawn by scroll, stages beside it, questions where scope changed. */
@@ -14,7 +14,7 @@ export function JourneyLine({ stages }: { stages: Stage[] }) {
   return (
     <div className="relative">
       <span aria-hidden className="absolute bottom-2 left-[3px] top-2 w-px bg-line" />
-      <motion.span
+      <m.span
         aria-hidden
         className="absolute bottom-2 left-[3px] top-2 w-px origin-top bg-accent/70"
         style={{ scaleY: reduced ? 1 : scaleY }}

@@ -16,10 +16,10 @@ for (const [name, viewport] of [
   await page.screenshot({ path: `${out}/${name}${tag}-top.png` })
   // Walk the page so scroll-triggered reveals have fired before the full capture.
   await page.evaluate(async () => {
-    const step = window.innerHeight / 2
+    const step = window.innerHeight / 3
     for (let y = 0; y < document.body.scrollHeight; y += step) {
       window.scrollTo(0, y)
-      await new Promise((r) => setTimeout(r, 120))
+      await new Promise((r) => setTimeout(r, 250))
     }
     window.scrollTo(0, 0)
   })
