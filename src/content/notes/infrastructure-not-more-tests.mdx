@@ -1,0 +1,37 @@
+---
+title: Building infrastructure instead of writing more tests
+date: 2026-09-03
+summary: The moment I stopped measuring my work in test cases and started measuring it in what every future test got for free.
+tags: [engineering, automation, infrastructure]
+---
+
+For a while, a good week meant a lot of new tests. It felt productive. It was
+also a treadmill: every new service needed its own setup, every flaky run
+needed a re-run, and nobody trusted the red builds enough to stop for them.
+
+The shift happened when I started asking a different question. Not "which
+test should I write next?" but **"what would make the next hundred tests
+cheaper?"**
+
+## The system behind the tests
+
+The answers were unglamorous and compounding:
+
+- A typed client for every API, so tests describe intent instead of HTTP.
+- Runners that execute in parallel in containers, so a full suite takes
+  minutes rather than an afternoon.
+- Cleanup that leaves an environment the way it found it, so tests can run
+  in any order and any number of times.
+- Reporting that lands where engineers already look, so a failure is a
+  message, not an archaeology project.
+
+None of these is a test. All of them made every test after them easier to
+write, faster to run and easier to trust.
+
+## Why this matters beyond testing
+
+It changed how I think about most engineering problems. There is usually a
+layer below the obvious work where a small amount of infrastructure removes a
+large amount of repeated effort. Finding that layer, and building it well, is
+most of what I now think of as my job — whether the thing on top is a test
+suite, an agent, or a product.

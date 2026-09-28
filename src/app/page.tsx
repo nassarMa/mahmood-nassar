@@ -21,6 +21,8 @@ import { agents } from '@/content/agents'
 import { engineering } from '@/content/engineering'
 import { ai } from '@/content/ai'
 import { portraitSrc } from '@/lib/portrait'
+import { Notes } from '@/components/sections/Notes'
+import { getNotes } from '@/lib/notes'
 
 export default function Home() {
   const building = stage('building')
@@ -29,6 +31,7 @@ export default function Home() {
   const aiStage = stage('ai')
   const journeyStage = stage('journey')
   const aboutStage = stage('about')
+  const notesStage = stage('notes')
   return (
     <>
       <Hero threadCount={threads.length} portraitSrc={portraitSrc()} />
@@ -71,6 +74,16 @@ export default function Home() {
           intro="Not a résumé. The same person asking bigger questions: from how to test a thing, to how to build the system, to which problem is worth solving at all."
         >
           <Journey stages={journey} />
+        </Section>
+
+        <Section
+          id={notesStage.id}
+          eyebrow={notesStage.eyebrow}
+          label={notesStage.label}
+          title="Notes from the build."
+          intro="Things I learned, things I’m building, AI experiments, product lessons and community observations. Short, honest, occasionally wrong."
+        >
+          <Notes notes={getNotes().slice(0, 3)} />
         </Section>
 
         <Section id={aboutStage.id} eyebrow={aboutStage.eyebrow} label={aboutStage.label} title="Between the idea and the system.">

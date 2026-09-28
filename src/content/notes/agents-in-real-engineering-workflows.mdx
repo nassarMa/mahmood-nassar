@@ -1,0 +1,41 @@
+---
+title: What happens when AI agents enter real engineering workflows?
+date: 2026-09-21
+summary: Demos are easy. Here is what changed when I gave agents real tools inside a real engineering environment — and where I had to pull them back.
+tags: [ai, agents, engineering]
+---
+
+Every agent demo looks the same: a clean repository, a well-formed question, a
+confident answer. Real engineering environments are nothing like that. The
+repository is ten years old, the question is half-formed, and the answer has
+to be checked before anyone acts on it.
+
+So I stopped building demos and started giving agents the tools an engineer
+actually reaches for: read access to code, a cloud API, the issue tracker, a
+browser. Then I watched what they did with them.
+
+## Where agents earned their place
+
+**Investigation.** Asking "where is this value set and who reads it?" against a
+large codebase is slow for a person and fast for an agent with grep and a
+little patience. With citations back to files and lines, the answer is
+checkable in seconds.
+
+**First drafts.** A ticket summary, a reproduction script, a Playwright flow
+that clicks through a reported bug. None of these need to be perfect; they
+need to exist so a person can react to them.
+
+**Cloud questions.** "Which of these instances is still running the old
+image?" is a five-minute console session or a ten-second agent call with the
+right, read-only tool.
+
+## Where I pulled them back
+
+Anywhere the agent had to *decide alone*. Changing infrastructure, closing
+tickets, merging code. Not because the agent was always wrong, but because
+being wrong quietly is worse than being slow.
+
+The interesting engineering turned out to be in the boundaries: which tools
+are read-only, which actions require a human in the loop, how an agent says
+"I could not confirm this". That is where the trust comes from, and trust is
+the only thing that lets an agent stay in the workflow.

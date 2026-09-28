@@ -62,6 +62,72 @@ body {
   }
 }
 
+/* Note bodies (MDX). */
+.prose-note {
+  font-size: 18px;
+  line-height: 1.7;
+}
+.prose-note > * + * {
+  margin-top: 1.25em;
+}
+.prose-note h2 {
+  @apply mt-12 font-display text-[1.75rem] font-light leading-tight tracking-[-0.01em];
+}
+.prose-note h3 {
+  @apply mt-8 font-display text-[1.35rem] font-light leading-tight;
+}
+.prose-note p,
+.prose-note li {
+  color: var(--color-muted);
+}
+.prose-note strong {
+  color: var(--color-text);
+  font-weight: 500;
+}
+.prose-note em {
+  font-style: italic;
+}
+.prose-note a {
+  color: var(--color-text);
+  text-decoration: underline;
+  text-decoration-color: var(--color-line-strong);
+  text-underline-offset: 4px;
+}
+.prose-note a:hover {
+  color: var(--color-accent);
+}
+.prose-note ul,
+.prose-note ol {
+  padding-left: 1.4em;
+}
+.prose-note ul {
+  list-style: disc;
+}
+.prose-note ol {
+  list-style: decimal;
+}
+.prose-note li + li {
+  margin-top: 0.5em;
+}
+.prose-note code {
+  @apply rounded bg-surface px-1.5 py-0.5 font-mono text-[0.85em] text-text;
+}
+.prose-note pre {
+  @apply overflow-x-auto border bg-surface p-4 font-mono text-[0.85em];
+  border-color: var(--color-line);
+}
+.prose-note pre code {
+  @apply bg-transparent p-0;
+}
+.prose-note blockquote {
+  @apply border-l pl-5 font-display text-[1.2em] font-light italic;
+  border-color: var(--color-line-strong);
+}
+.prose-note hr {
+  @apply my-10 border-0 border-t;
+  border-color: var(--color-line);
+}
+
 /* Dafsha: a faint warm wash so the section feels human, not technical. */
 .dafsha::before {
   content: '';

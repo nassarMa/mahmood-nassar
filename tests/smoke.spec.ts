@@ -94,6 +94,24 @@ test.describe('about + connect', () => {
   })
 })
 
+test.describe('field notes', () => {
+  test('home shows the latest three notes', async ({ page }) => {
+    await page.goto('/')
+    await expect(page.locator('#notes [data-note]')).toHaveCount(3)
+    await expect(page.locator('#notes a[href="/notes"]')).toBeVisible()
+  })
+
+  test('index lists notes and each note page renders its title', async ({ page }) => {
+    await page.goto('/notes')
+    const cards = page.locator('[data-note]')
+    await expect(cards).toHaveCount(3)
+    await cards.first().locator('a').click()
+    await expect(page).toHaveURL(/\/notes\/[a-z0-9-]+$/)
+    await expect(page.getByRole('heading', { level: 1 })).toContainText(/agents/i)
+    await expect(page.locator('.prose-note h2').first()).toBeVisible()
+  })
+})
+
 test.describe('pipeline rail', () => {
   test('lights the stage in view', async ({ page }) => {
     await page.goto('/')

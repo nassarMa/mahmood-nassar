@@ -1,0 +1,39 @@
+---
+title: Why fresh job data is much harder than scraping job boards
+date: 2026-09-12
+summary: Scraping is the easy part. Freshness is a modelling problem — what counts as new, changed or closed — and it has to be solved before the first page is fetched.
+tags: [career-tech, data, automation]
+---
+
+When I started working on career intelligence, I assumed the hard part would
+be scraping. Careers pages are inconsistent, some render with JavaScript, some
+block bots. Annoying, but solvable.
+
+The hard part turned out to be a question, not a page: **what does "fresh"
+mean?**
+
+## Three things that look like new roles and are not
+
+1. A role reposted with a new ID because the recruiter refreshed it.
+2. The same role listed on the company page, two boards and an aggregator,
+   each with slightly different titles.
+3. A role that is technically open but has been "open" for eleven months.
+
+If you count any of these as new, the person on the other end gets a
+notification that wastes their time, and after three of those they stop
+trusting the system.
+
+## What actually works
+
+- Go to the source. The company's own careers page is the canonical record;
+  boards are echoes of it.
+- Model identity, not URLs. A role is a company, a title family, a location
+  and a rough seniority. Two listings that match on those are one role.
+- Track state over time. New is only meaningful relative to what was there
+  yesterday. Closed is only knowable because something disappeared.
+- Let an agent do the last check. When the pipeline is unsure whether a role
+  is real or still open, an agent can read the page the way a careful person
+  would and say so.
+
+The scraping still matters. But the value is in the model of freshness that
+sits on top of it, and that is where most of the thinking goes.
