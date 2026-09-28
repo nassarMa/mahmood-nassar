@@ -6,7 +6,7 @@ import { site } from '@/content/site'
 import { getNotes } from '@/lib/notes'
 
 export const metadata: Metadata = {
-  title: `Field notes — ${site.name}`,
+  title: 'Field notes',
   description: 'Things I learned, things I’m building, AI experiments, product lessons and community observations.',
   alternates: { canonical: '/notes' },
 }
