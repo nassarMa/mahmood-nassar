@@ -5,8 +5,8 @@ import { formatDate } from '@/lib/notes'
 export function NoteCard({ note }: { note: NoteMeta }) {
   return (
     <article data-note={note.slug} className="group border-t hairline py-6 md:py-7">
-      <Link href={`/notes/${note.slug}`} className="grid gap-2 sm:grid-cols-[112px_1fr] sm:gap-6">
-        <time dateTime={note.date} className="eyebrow pt-2">
+      <Link href={`/notes/${note.slug}`} className="grid gap-2 sm:grid-cols-[136px_1fr] sm:gap-6">
+        <time dateTime={note.date} className="eyebrow whitespace-nowrap pt-2">
           {formatDate(note.date)}
         </time>
         <div>

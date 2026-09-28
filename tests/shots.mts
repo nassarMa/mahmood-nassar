@@ -1,8 +1,10 @@
 // Dev helper: `pnpm tsx tests/shots.ts [out-dir]` screenshots the running site.
 import { chromium } from '@playwright/test'
 
+// Usage: tsx tests/shots.mts [out-dir] [path] [tag]
 const out = process.argv[2] ?? 'test-results/shots'
-const base = process.env.BASE_URL ?? 'http://localhost:3000'
+const base = (process.env.BASE_URL ?? 'http://localhost:3000') + (process.argv[3] ?? '')
+const tag = process.argv[4] ?? ''
 
 const browser = await chromium.launch()
 for (const [name, viewport] of [
@@ -11,7 +13,7 @@ for (const [name, viewport] of [
 ] as const) {
   const page = await browser.newPage({ viewport })
   await page.goto(base, { waitUntil: 'networkidle' })
-  await page.screenshot({ path: `${out}/${name}-top.png` })
+  await page.screenshot({ path: `${out}/${name}${tag}-top.png` })
   // Walk the page so scroll-triggered reveals have fired before the full capture.
   await page.evaluate(async () => {
     const step = window.innerHeight / 2
@@ -22,7 +24,7 @@ for (const [name, viewport] of [
     window.scrollTo(0, 0)
   })
   await page.waitForTimeout(600)
-  await page.screenshot({ path: `${out}/${name}-full.png`, fullPage: true })
+  await page.screenshot({ path: `${out}/${name}${tag}-full.png`, fullPage: true })
   for (const el of await page.locator('[data-stage]').all()) {
     const id = await el.getAttribute('data-stage')
     await el.scrollIntoViewIfNeeded()
