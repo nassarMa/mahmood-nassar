@@ -49,6 +49,19 @@ body {
   border-color: var(--color-line);
 }
 
+/* Cursor tilt: pointer devices only, off under reduced motion. */
+.tilt {
+  --rx: 0deg;
+  --ry: 0deg;
+}
+@media (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  .tilt {
+    transform: perspective(1200px) rotateX(var(--rx)) rotateY(var(--ry));
+    transition: transform 160ms ease-out;
+    will-change: transform;
+  }
+}
+
 /* Faint drafting grid, hero only, fading towards the bottom. */
 .hero-grid::before {
   content: '';

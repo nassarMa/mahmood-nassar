@@ -11,6 +11,29 @@ test.describe('hero', () => {
   })
 })
 
+test.describe('currently building', () => {
+  test('shows four numbered threads with a status', async ({ page }) => {
+    await page.goto('/')
+    const cards = page.locator('#building [data-thread]')
+    await expect(cards).toHaveCount(4)
+    await expect(cards.nth(0)).toContainText('01')
+    await expect(cards.nth(3)).toContainText('Dafsha')
+    await expect(cards.nth(3)).toContainText('Community initiative')
+  })
+})
+
+test.describe('selected work', () => {
+  test('tells each project as a story with an honest status', async ({ page }) => {
+    await page.goto('/')
+    const stories = page.locator('#work article')
+    await expect(stories).toHaveCount(4)
+    for (const label of ['Problem', 'Thinking', 'Build', 'Technology', 'Learning']) {
+      await expect(stories.first().getByText(label, { exact: true })).toBeVisible()
+    }
+    await expect(stories.first()).toContainText('Internal engineering work')
+  })
+})
+
 test.describe('pipeline rail', () => {
   test('lights the stage in view', async ({ page }) => {
     await page.goto('/')
