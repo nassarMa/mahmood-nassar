@@ -1,4 +1,68 @@
 import { test, expect } from '@playwright/test'
+import AxeBuilder from '@axe-core/playwright'
+
+const STAGES = ['building', 'work', 'engineering', 'ai', 'dafsha', 'journey', 'notes', 'about', 'connect']
+
+test.describe('whole page', () => {
+  test('all stages present, no console errors', async ({ page }) => {
+    const errors: string[] = []
+    page.on('console', (m) => m.type() === 'error' && errors.push(m.text()))
+    page.on('pageerror', (e) => errors.push(e.message))
+    await page.goto('/')
+    for (const id of STAGES) {
+      await page.locator(`#${id}`).scrollIntoViewIfNeeded()
+      await expect(page.locator(`#${id}`)).toBeVisible()
+    }
+    expect(errors).toEqual([])
+  })
+
+  test('hero CTA activates the building stage', async ({ page }) => {
+    await page.goto('/')
+    await page.getByRole('link', { name: /see what i.m building/i }).click()
+    await expect(page.locator('nav[aria-label="Sections"]')).toHaveAttribute('data-active-stage', 'building')
+  })
+
+  test('reduced motion renders everything in its final state', async ({ browser }) => {
+    const ctx = await browser.newContext({ reducedMotion: 'reduce', viewport: { width: 390, height: 844 } })
+    const page = await ctx.newPage()
+    await page.goto('/')
+    const hidden = await page.locator('main [style*="opacity: 0"], main [style*="opacity:0"]').count()
+    expect(hidden).toBe(0)
+    await expect(page.locator('#connect h2')).toBeVisible()
+    await ctx.close()
+  })
+
+  test('no horizontal overflow at 320px', async ({ browser }) => {
+    const ctx = await browser.newContext({ viewport: { width: 320, height: 700 } })
+    const page = await ctx.newPage()
+    await page.goto('/')
+    const sw = await page.evaluate(() => document.documentElement.scrollWidth)
+    expect(sw).toBeLessThanOrEqual(320)
+    await ctx.close()
+  })
+
+  test('axe reports no violations on home and a note', async ({ page }) => {
+    for (const path of ['/', '/notes/fresh-job-data-is-hard']) {
+      await page.goto(path)
+      const { violations } = await new AxeBuilder({ page }).analyze()
+      expect(violations.map((v) => `${v.id}: ${v.nodes.map((n) => n.target.join(' ')).join(', ')}`)).toEqual([])
+    }
+  })
+})
+
+test.describe('mobile nav', () => {
+  test('phone gets a quick nav with four anchors; desktop does not', async ({ page, isMobile }) => {
+    await page.goto('/')
+    const nav = page.locator('nav[aria-label="Quick navigation"]')
+    if (isMobile) {
+      await expect(nav).toBeVisible()
+      await expect(nav.locator('a')).toHaveCount(4)
+      await expect(nav.locator('a').last()).toHaveAttribute('href', '#connect')
+    } else {
+      await expect(nav).toBeHidden()
+    }
+  })
+})
 
 test.describe('hero', () => {
   test('says who Mahmood is within the first screen', async ({ page }) => {

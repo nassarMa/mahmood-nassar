@@ -10,7 +10,7 @@ type Props = { portraitSrc?: string; threadCount: number }
 export function Hero({ portraitSrc, threadCount }: Props) {
   return (
     <header className="hero-grid relative flex min-h-[100svh] flex-col border-b hairline">
-      <div className="mx-auto flex w-full max-w-[1200px] items-center justify-between px-4 pt-6 md:px-8 md:pt-8">
+      <div className="mx-auto flex w-full max-w-[1200px] flex-wrap items-center justify-between gap-x-4 gap-y-3 px-4 pt-6 md:px-8 md:pt-8">
         <p className="whitespace-nowrap font-mono text-[13px] tracking-[0.06em] text-text">{site.name}</p>
         <StatusChip word={site.statusWord} count={threadCount} />
       </div>

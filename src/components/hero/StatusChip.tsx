@@ -10,7 +10,8 @@ export function StatusChip({ word, count }: Props) {
       <span>
         {word}
         <span className="text-faint"> — </span>
-        {count} active threads
+        {count}
+        <span className="hidden sm:inline"> active</span> threads
       </span>
     </p>
   )

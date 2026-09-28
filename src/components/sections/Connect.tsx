@@ -20,7 +20,7 @@ export function Connect({ stage, content, links, name }: Props) {
       data-stage={stage.id}
       data-stage-label={stage.label}
       aria-labelledby={`${stage.id}-title`}
-      className="relative border-t hairline py-24 md:py-36"
+      className="relative border-t hairline pb-32 pt-24 md:py-36"
     >
       <div className="mx-auto max-w-[1200px] px-4 md:grid md:grid-cols-12 md:gap-8 md:px-8">
         <Reveal className="md:col-span-6">

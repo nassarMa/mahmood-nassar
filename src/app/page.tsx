@@ -22,6 +22,7 @@ import { engineering } from '@/content/engineering'
 import { ai } from '@/content/ai'
 import { portraitSrc } from '@/lib/portrait'
 import { Notes } from '@/components/sections/Notes'
+import { MobileNav } from '@/components/ui/MobileNav'
 import { getNotes } from '@/lib/notes'
 
 export default function Home() {
@@ -92,6 +93,7 @@ export default function Home() {
 
         <Connect stage={stage('connect')} content={connect} links={site.links} name={site.name} />
       </main>
+      <MobileNav />
     </>
   )
 }

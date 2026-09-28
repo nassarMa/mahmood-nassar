@@ -7,14 +7,14 @@
   --color-line-strong: rgba(237, 232, 223, 0.16);
   --color-text: #ede8df;
   --color-muted: #a39e94;
-  --color-faint: #6b665e;
+  --color-faint: #868178;
   --color-accent: #e0863c;
 
   --font-display: var(--font-display), Georgia, serif;
   --font-sans: var(--font-sans), system-ui, sans-serif;
   --font-mono: var(--font-mono), ui-monospace, monospace;
 
-  --text-display: clamp(3.5rem, 6vw + 1rem, 7.5rem);
+  --text-display: clamp(3.1rem, 6vw + 1rem, 7.5rem);
   --text-title: clamp(2rem, 2.5vw + 1rem, 3rem);
 }
 
