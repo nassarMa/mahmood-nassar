@@ -1,18 +1,39 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
   <defs>
-    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" stop-color="#34d399"/>
-      <stop offset="1" stop-color="#0f766e"/>
+    <linearGradient id="gtp-bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#162a4a"/>
+      <stop offset="1" stop-color="#070b14"/>
     </linearGradient>
-    <radialGradient id="s" cx="0.3" cy="0.2" r="0.9">
-      <stop offset="0" stop-color="#fff" stop-opacity="0.35"/>
-      <stop offset="1" stop-color="#fff" stop-opacity="0"/>
+    <radialGradient id="gtp-glow" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#c8ff2e" stop-opacity="0.35"/>
+      <stop offset="1" stop-color="#c8ff2e" stop-opacity="0"/>
     </radialGradient>
+    <linearGradient id="gtp-ball" x1="0.3" y1="0" x2="0.7" y2="1">
+      <stop offset="0" stop-color="#ffffff"/>
+      <stop offset="1" stop-color="#dfe3ea"/>
+    </linearGradient>
   </defs>
-  <rect width="512" height="512" rx="116" fill="url(#g)"/>
-  <rect width="512" height="512" rx="116" fill="url(#s)"/>
-  <circle cx="256" cy="256" r="120" fill="#fff" fill-opacity="0.95"/>
-  <path d="M256 170l38 28-15 45h-46l-15-45z" fill="#0f172a"/>
-  <path d="M256 170l-38 28-44-14 12-46 48-6z M256 170l38 28 44-14-12-46-48-6z M218 198l15 45-28 38-43-20 2-49z M294 198l-15 45 28 38 43-20-2-49z M233 243h46l25 37-25 42h-46l-25-42z" fill="none" stroke="#0f172a" stroke-width="10" stroke-linejoin="round"/>
-  <text x="256" y="430" text-anchor="middle" font-family="system-ui, -apple-system, Segoe UI, sans-serif" font-size="96" font-weight="800" fill="#fff">?</text>
+  <rect width="512" height="512" rx="116" fill="url(#gtp-bg)"/>
+  <circle cx="256" cy="256" r="230" fill="url(#gtp-glow)"/>
+
+  <!-- target rings, as in the app's own icon -->
+  <circle cx="256" cy="256" r="178" fill="none" stroke="#c8ff2e" stroke-opacity="0.35" stroke-width="6"/>
+  <circle cx="256" cy="256" r="138" fill="none" stroke="#c8ff2e" stroke-width="12"/>
+  <path d="M256 36v46M256 430v46M36 256h46M430 256h46" stroke="#f3f1e9" stroke-opacity="0.55" stroke-width="10" stroke-linecap="round"/>
+
+  <!-- football -->
+  <circle cx="256" cy="256" r="92" fill="url(#gtp-ball)"/>
+  <g fill="#0b1220">
+    <path d="M256 190l40 29-15 47h-50l-15-47z"/>
+    <path d="M256 164c-4 8-6 18-6 26h12c0-8-2-18-6-26z"/>
+    <path d="M296 219l31-10c-6-14-16-26-28-35l-10 12 7 33z"/>
+    <path d="M216 219l-31-10c6-14 16-26 28-35l10 12-7 33z"/>
+    <path d="M281 266l21 42c13-11 23-25 27-42l-23-13z"/>
+    <path d="M231 266l-21 42c-13-11-23-25-27-42l23-13z"/>
+    <path d="M237 316l-13 26c20 8 44 8 64 0l-13-26z"/>
+  </g>
+
+  <!-- question mark badge -->
+  <circle cx="372" cy="140" r="58" fill="#c8ff2e"/>
+  <text x="372" y="166" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif" font-size="78" font-weight="800" fill="#0b1220">?</text>
 </svg>
