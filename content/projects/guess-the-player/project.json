@@ -1,0 +1,14 @@
+{
+  "title": "خمّن اللاعب",
+  "tagline": "Think of a footballer. Answer yes or no. Can the AI name them in 20 questions?",
+  "url": "https://guess-the-player-nassarmahmoodswe-4498s-projects.vercel.app/",
+  "kind": "game",
+  "tags": ["ai", "game", "football", "arabic"],
+  "folder": "Games",
+  "date": "2026-10-10",
+  "status": "live",
+  "lang": "ar",
+  "featured": true,
+  "icon": "icon.svg",
+  "media": { "cover": "cover.png" }
+}

@@ -1,35 +1,41 @@
 @import 'tailwindcss';
 
 @theme {
-  --color-bg: #0f0e0c;
-  --color-surface: #161513;
-  --color-line: rgba(237, 232, 223, 0.08);
-  --color-line-strong: rgba(237, 232, 223, 0.16);
-  --color-text: #ede8df;
-  --color-muted: #a39e94;
-  --color-faint: #868178;
-  --color-accent: #e0863c;
+  --color-bg: #07090f;
+  --color-bg-2: #0e1220;
+  --color-glass: rgba(255, 255, 255, 0.07);
+  --color-glass-strong: rgba(255, 255, 255, 0.12);
+  --color-line: rgba(255, 255, 255, 0.1);
+  --color-line-strong: rgba(255, 255, 255, 0.2);
+  --color-text: #f3f4f8;
+  --color-muted: #a6abbd;
+  --color-faint: #6f7589;
+  --color-accent: #7c9cff;
+  --color-new: #34d399;
 
-  --font-display: var(--font-display), Georgia, serif;
-  --font-sans: var(--font-sans), system-ui, sans-serif;
-  --font-mono: var(--font-mono), ui-monospace, monospace;
+  --font-sans: ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', 'Noto Sans Arabic', sans-serif;
 
-  --text-display: clamp(3.1rem, 6vw + 1rem, 7.5rem);
-  --text-title: clamp(2rem, 2.5vw + 1rem, 3rem);
+  --radius-icon: 22%;
 }
 
 :root {
   color-scheme: dark;
 }
 
-html {
-  scroll-behavior: smooth;
+html,
+body {
+  height: 100%;
 }
 
 body {
   @apply bg-bg text-text font-sans antialiased;
-  font-size: 17px;
-  line-height: 1.6;
+  background-image:
+    radial-gradient(60% 40% at 20% 0%, rgba(124, 156, 255, 0.22), transparent 70%),
+    radial-gradient(50% 35% at 90% 20%, rgba(236, 72, 153, 0.16), transparent 70%),
+    radial-gradient(60% 50% at 50% 100%, rgba(52, 211, 153, 0.1), transparent 70%);
+  background-attachment: fixed;
+  overscroll-behavior-y: none;
+  -webkit-tap-highlight-color: transparent;
 }
 
 ::selection {
@@ -41,147 +47,57 @@ body {
   outline-offset: 3px;
 }
 
-.eyebrow {
-  @apply font-mono text-[12px] uppercase tracking-[0.18em] text-faint;
+/* Frosted panels: top bar, dock, folder overlay, sheet. */
+.glass {
+  background: var(--color-glass);
+  border: 1px solid var(--color-line);
+  backdrop-filter: blur(24px) saturate(160%);
+  -webkit-backdrop-filter: blur(24px) saturate(160%);
 }
 
-.hairline {
-  border-color: var(--color-line);
+/* App icon: rounded square with a soft inner highlight. */
+.app-icon {
+  position: relative;
+  border-radius: var(--radius-icon);
+  overflow: hidden;
+  box-shadow:
+    0 10px 24px rgba(0, 0, 0, 0.45),
+    inset 0 1px 0 rgba(255, 255, 255, 0.18);
+  transition: transform 140ms ease-out;
+}
+.app-icon:active {
+  transform: scale(0.92);
 }
 
-/* Cursor tilt: pointer devices only, off under reduced motion. */
-.tilt {
-  --rx: 0deg;
-  --ry: 0deg;
+.hide-scrollbar {
+  scrollbar-width: none;
 }
-@media (pointer: fine) and (prefers-reduced-motion: no-preference) {
-  .tilt {
-    transform: perspective(1200px) rotateX(var(--rx)) rotateY(var(--ry));
-    transition: transform 160ms ease-out;
-    will-change: transform;
-  }
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
 }
 
-/* Note bodies (MDX). */
-.prose-note {
-  font-size: 18px;
-  line-height: 1.7;
+.prose-story :is(h1, h2, h3) {
+  @apply mt-6 mb-2 font-semibold text-text;
 }
-.prose-note > * + * {
-  margin-top: 1.25em;
+.prose-story p {
+  @apply my-3 leading-relaxed text-muted;
 }
-.prose-note h2 {
-  @apply mt-12 font-display text-[1.75rem] font-light leading-tight tracking-[-0.01em];
+.prose-story strong {
+  @apply text-text;
 }
-.prose-note h3 {
-  @apply mt-8 font-display text-[1.35rem] font-light leading-tight;
+.prose-story a {
+  @apply text-accent underline underline-offset-4;
 }
-.prose-note p,
-.prose-note li {
-  color: var(--color-muted);
+.prose-story :is(ul, ol) {
+  @apply my-3 list-disc pl-5 text-muted;
 }
-.prose-note strong {
-  color: var(--color-text);
-  font-weight: 500;
-}
-.prose-note em {
-  font-style: italic;
-}
-.prose-note a {
-  color: var(--color-text);
-  text-decoration: underline;
-  text-decoration-color: var(--color-line-strong);
-  text-underline-offset: 4px;
-}
-.prose-note a:hover {
-  color: var(--color-accent);
-}
-.prose-note ul,
-.prose-note ol {
-  padding-left: 1.4em;
-}
-.prose-note ul {
-  list-style: disc;
-}
-.prose-note ol {
-  list-style: decimal;
-}
-.prose-note li + li {
-  margin-top: 0.5em;
-}
-.prose-note code {
-  @apply rounded bg-surface px-1.5 py-0.5 font-mono text-[0.85em] text-text;
-}
-.prose-note pre {
-  @apply overflow-x-auto border bg-surface p-4 font-mono text-[0.85em];
-  border-color: var(--color-line);
-}
-.prose-note pre code {
-  @apply bg-transparent p-0;
-}
-.prose-note blockquote {
-  @apply border-l pl-5 font-display text-[1.2em] font-light italic;
-  border-color: var(--color-line-strong);
-}
-.prose-note hr {
-  @apply my-10 border-0 border-t;
-  border-color: var(--color-line);
-}
-
-/* Dafsha: a faint warm wash so the section feels human, not technical. */
-.dafsha::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  background: radial-gradient(
-    60% 50% at 85% 15%,
-    color-mix(in oklab, var(--color-accent) 7%, transparent),
-    transparent 70%
-  );
-}
-
-/* A packet travelling down a vertical line (AI flow). */
-@keyframes packet-drop {
-  0% { top: 0; opacity: 0; }
-  8% { opacity: 1; }
-  92% { opacity: 1; }
-  100% { top: 100%; opacity: 0; }
-}
-.packet-drop {
-  animation: packet-drop 6s linear infinite;
-}
-
-/* Faint drafting grid, hero only, fading towards the bottom. */
-.hero-grid::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  background-image:
-    linear-gradient(to right, var(--color-line) 1px, transparent 1px),
-    linear-gradient(to bottom, var(--color-line) 1px, transparent 1px);
-  background-size: 96px 96px;
-  mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.9), transparent 85%);
+.prose-story code {
+  @apply rounded bg-glass px-1 py-0.5 text-[0.9em];
 }
 
 @media (prefers-reduced-motion: reduce) {
-  html {
-    scroll-behavior: auto;
-  }
-  /* Final states, regardless of what JS has or hasn't done yet. */
-  [data-reveal] {
-    opacity: 1 !important;
-    transform: none !important;
-  }
-  .journey-progress {
-    transform: none !important;
-  }
-  *,
-  *::before,
-  *::after {
+  * {
     animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
   }
 }

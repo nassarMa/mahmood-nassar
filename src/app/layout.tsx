@@ -1,48 +1,34 @@
-import type { Metadata } from 'next'
+import type { Metadata, Viewport } from 'next'
 import './globals.css'
-import { fraunces, geist, geistMono } from '@/lib/fonts'
-import { site } from '@/content/site'
-import { MotionProvider } from '@/components/ui/MotionProvider'
+import { loadCreator } from '@/lib/content'
+import { siteUrl } from '@/lib/site'
+
+const creator = loadCreator()
 
 export const metadata: Metadata = {
-  metadataBase: new URL(site.url),
-  title: { default: site.title, template: `%s — ${site.name}` },
-  description: site.description,
-  alternates: { canonical: '/' },
-  openGraph: {
-    type: 'website',
-    siteName: site.name,
-    title: site.title,
-    description: site.description,
-    url: '/',
-    locale: 'en_US',
-  },
-  twitter: { card: 'summary_large_image', title: site.title, description: site.description },
+  metadataBase: new URL(siteUrl()),
+  title: { default: `${creator.name} — Projects`, template: `%s — ${creator.name}` },
+  description: creator.tagline,
+  applicationName: `${creator.name} Projects`,
+  appleWebApp: { capable: true, statusBarStyle: 'black-translucent', title: creator.name },
+  openGraph: { type: 'website', siteName: `${creator.name} — Projects`, title: `${creator.name} — Projects`, description: creator.tagline, url: '/' },
+  twitter: { card: 'summary_large_image' },
   robots: { index: true, follow: true },
 }
 
-const person = {
-  '@context': 'https://schema.org',
-  '@type': 'Person',
-  name: site.name,
-  url: site.url,
-  jobTitle: site.jobTitle,
-  description: site.description,
-  sameAs: Object.values(site.links).filter((v): v is string => typeof v === 'string' && v.startsWith('http')),
+export const viewport: Viewport = {
+  themeColor: '#07090f',
+  width: 'device-width',
+  initialScale: 1,
+  viewportFit: 'cover',
 }
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default function RootLayout({ children, sheet }: { children: React.ReactNode; sheet: React.ReactNode }) {
   return (
-    <html lang="en" className={`${fraunces.variable} ${geist.variable} ${geistMono.variable}`}>
+    <html lang="en">
       <body>
-        <a
-          href="#main"
-          className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:bg-surface focus:px-3 focus:py-2"
-        >
-          Skip to content
-        </a>
-        <MotionProvider>{children}</MotionProvider>
-        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(person) }} />
+        {children}
+        {sheet}
       </body>
     </html>
   )

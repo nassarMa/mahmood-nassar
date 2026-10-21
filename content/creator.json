@@ -1,0 +1,13 @@
+{
+  "name": "Mahmood Nassar",
+  "handle": "@mahmoodnassar",
+  "tagline": "AI apps, games, tools & experiments. Tap one to try it.",
+  "avatar": "/avatar.svg",
+  "links": {
+    "instagram": "https://www.instagram.com/",
+    "github": "https://github.com/nassarMa",
+    "linkedin": null,
+    "email": null
+  },
+  "dock": ["guess-the-player", "aqrab-masjid"]
+}

@@ -1,73 +1,62 @@
-# mahmood-nassar
+# Project Hub
 
-Personal website of Mahmood Nassar — engineer, builder, experimenter.
+One link for the bio. A mobile-first "home screen" of every app, game, tool
+and experiment I've built: tap an icon to see what it is, watch a clip, read
+the story, and launch it.
 
-The visual spine is a **pipeline**: `problem → research → architecture → prototype → automation → product → feedback → iteration`, drawn as one line through the hero, down the page as a rail, and through each project story.
+Built with Next.js 16 (App Router), TypeScript, Tailwind CSS 4 and `motion`.
+Content is files in the repo; a bad file fails the build. No database, no
+trackers.
 
-Built with Next.js (App Router, fully static), TypeScript, Tailwind CSS 4, `motion`, and MDX. No analytics, no trackers.
+## Adding a project
 
-## Editing the site
+1. Create `content/projects/<slug>/project.json` (slug: lowercase, hyphens):
 
-All copy lives in `src/content/`. Components never contain prose.
-
-| File | What it controls |
-| --- | --- |
-| `site.ts` | Name, positioning line, description, footer note, social links (`null` = "coming soon" placeholder) |
-| `hero.ts` | Hero eyebrow, the three headline lines, the four routed words, CTA labels |
-| `stages.ts` | Section order, eyebrows, rail labels, section titles and intros, phone quick-nav |
-| `threads.ts` | The four "Currently building" threads |
-| `projects.ts` | Project stories (problem / thinking / build / tech / learning / status) |
-| `engineering.ts`, `stack.ts` | Engineering headline and the technology layers |
-| `ai.ts`, `agents.ts` | AI flow copy and the kinds of agent |
-| `dafsha.ts` | Community section |
-| `journey.ts` | The seven journey stages |
-| `about.ts`, `connect.ts` | About and Connect copy |
-
-Statuses come from `types.ts` (`live`, `building`, `experiment`, `prototype`, `research`, `internal`, `community`). Keep them honest.
-
-### Adding a field note
-
-Create `src/content/notes/<slug>.mdx`:
-
-```md
----
-title: Why fresh job data is much harder than scraping job boards
-date: 2026-09-12
-summary: One or two sentences shown in lists and as the page description.
-tags: [career-tech, data]
----
-
-Body in Markdown. `## Headings`, lists, **bold**, links and code all work.
+```json
+{
+  "title": "Name shown under the icon",
+  "tagline": "One line, ≤ 120 chars",
+  "url": "https://the-live-app.example",
+  "kind": "app | game | tool | experiment",
+  "tags": ["ai", "game"],
+  "folder": "Games",
+  "date": "2026-10-10",
+  "status": "live | beta | archived",
+  "lang": "en",
+  "featured": false,
+  "icon": "icon.svg",
+  "media": { "cover": "cover.png", "demo": "demo.mp4" },
+  "links": { "reel": "https://www.instagram.com/reel/…", "source": "https://github.com/…" }
+}
 ```
 
-`title`, `date` and `summary` are required; the build fails with a clear message if one is missing. The home page shows the latest three.
+   `folder` groups icons into a folder on the home screen; omit it to keep the
+   icon loose. `media` and `links` are optional. Media values are file names in
+   `public/projects/<slug>/` or `https://` URLs.
 
-### Adding the portrait
+2. Put the media in `public/projects/<slug>/`: `icon.svg` or `icon.png`
+   (512×512), optional `cover.png` (phone screenshot works well) and an
+   optional `demo.mp4` (≤ 10 s, muted, ≤ 3 MB).
 
-Drop a photo at `public/images/mahmood.jpg` (4:5 works best, ≥ 1200px tall). The hero picks it up at build time; until then it renders a designed placeholder.
+3. Optional `content/projects/<slug>/story.md`: what it is, how it was built,
+   what you learned. Markdown; no raw HTML.
 
-### Social links
+4. To pin it in the dock, add the slug to `dock` in `content/creator.json`
+   (max 4). Projects released in the last 14 days get a "new" dot.
 
-Set the URLs in `src/content/site.ts` → `links`. Use `mailto:` for email. Anything left `null` renders as a disabled "coming soon" row.
+`content/creator.json` holds the name, handle, tagline, avatar and social
+links shown in the top bar (`null` hides a link).
 
 ## Development
 
 ```bash
 pnpm install
-pnpm dev            # http://localhost:3000
-pnpm typecheck      # tsc
-pnpm lint           # eslint
-pnpm test:content   # content rules (banned words, structure), portrait, notes loader
-pnpm test           # Playwright: smoke, a11y (axe), reduced motion, 320px overflow, SEO
-```
-
-`tests/shots.mts` screenshots every section at phone and desktop widths for design review:
-
-```bash
-pnpm build && pnpm start &
-pnpm tsx tests/shots.mts out/ [path] [tag]
+pnpm dev          # http://localhost:3000
+pnpm check        # lint + typecheck + unit tests + build
+pnpm test:e2e     # Playwright on a 390×844 viewport (builds and starts the app)
 ```
 
 ## Deploying
 
-The site deploys to Vercel from `main`. Set `NEXT_PUBLIC_SITE_URL` to the production URL (used for canonical links, the sitemap and Open Graph).
+Deploys to Vercel. Set `NEXT_PUBLIC_SITE_URL` to the production URL (used
+for canonical links, the sitemap and Open Graph images).
