@@ -120,10 +120,10 @@ function FolderIcon({ folder, onOpen }: { folder: Folder; onOpen: () => void }) 
       data-testid={`folder-${folder.name}`}
       className="flex w-full flex-col items-center gap-1.5"
     >
-      <span className="app-icon glass grid size-16 grid-cols-3 gap-1 p-2">
+      <span className="app-icon glass grid size-16 grid-cols-3 grid-rows-3 gap-1 p-2">
         {folder.projects.slice(0, 9).map((p) => (
           // eslint-disable-next-line @next/next/no-img-element
-          <img key={p.slug} src={p.iconUrl} alt="" className="block size-full rounded-[22%] object-cover" />
+          <img key={p.slug} src={p.iconUrl} alt="" className="block aspect-square w-full rounded-[22%] object-cover" />
         ))}
         {hasNew && <span className="absolute right-1 top-1 size-2.5 rounded-full bg-new ring-2 ring-bg" aria-hidden />}
       </span>

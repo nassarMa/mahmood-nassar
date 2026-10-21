@@ -19,7 +19,7 @@ export function TopBar({ creator }: { creator: Creator }) {
         <img src={creator.avatar} alt="" width={40} height={40} className="size-10 shrink-0 rounded-full" />
         <div className="min-w-0 flex-1">
           <p className="truncate text-[15px] font-semibold leading-tight">{creator.name}</p>
-          <p className="truncate text-[12px] leading-tight text-muted">{creator.tagline}</p>
+          <p className="line-clamp-2 text-[12px] leading-tight text-muted">{creator.tagline}</p>
         </div>
         <nav aria-label="Social links" className="flex shrink-0 gap-1">
           {links.map(([key, href]) => (
