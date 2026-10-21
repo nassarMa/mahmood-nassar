@@ -27,7 +27,6 @@ export const projectSchema = z.object({
   url: z.string().url().refine((u) => u.startsWith('https://'), { message: 'must be https' }),
   kind: z.enum(['app', 'game', 'tool', 'experiment']),
   tags: z.array(z.string().min(1).max(24)).max(8).default([]),
-  folder: z.string().min(1).max(24).optional(),
   date: z.string().regex(datePattern, 'must be YYYY-MM-DD'),
   status: z.enum(['live', 'beta', 'archived']).default('live'),
   lang: z.string().min(2).max(5).default('en'),
@@ -53,7 +52,6 @@ export const creatorSchema = z.object({
   tagline: z.string().min(1).max(140),
   avatar: z.string().min(1),
   links: z.record(z.string(), z.string().nullable()).default({}),
-  dock: z.array(z.string().regex(slugPattern)).max(4).default([]),
 })
 
 export type ProjectInput = z.input<typeof projectSchema>
@@ -152,29 +150,20 @@ export function loadCreator(opts: { contentDir?: string } = {}): Creator {
   return parsed.data
 }
 
-/** The whole hub, cross-checked: dock entries must exist. */
+/** Projects grouped by kind, in display order; empty kinds are omitted. */
+export const KIND_ORDER: Project['kind'][] = ['game', 'app', 'tool', 'experiment']
+export const KIND_LABEL: Record<Project['kind'], string> = { game: 'Games', app: 'Apps', tool: 'Tools', experiment: 'Experiments' }
+
+export type Section = { kind: Project['kind']; label: string; projects: Project[] }
+
+export function groupByKind(projects: Project[]): Section[] {
+  return KIND_ORDER.map((kind) => ({ kind, label: KIND_LABEL[kind], projects: projects.filter((p) => p.kind === kind) })).filter(
+    (s) => s.projects.length > 0,
+  )
+}
+
 export function loadHub(opts: { contentDir?: string; publicDir?: string; now?: Date } = {}) {
   const creator = loadCreator(opts)
   const projects = loadProjects(opts)
-  const bySlug = new Map(projects.map((p) => [p.slug, p]))
-  for (const slug of creator.dock) {
-    if (!bySlug.has(slug)) throw new ContentError(`content/creator.json: dock refers to unknown project "${slug}"`)
-  }
-  const dock = creator.dock.map((s) => bySlug.get(s)!)
-  const folders = groupFolders(projects)
-  return { creator, projects, dock, folders }
-}
-
-export type Folder = { name: string; projects: Project[] }
-
-/** Projects with a `folder` are grouped; the rest stay loose on the grid. */
-export function groupFolders(projects: Project[]): { folders: Folder[]; loose: Project[] } {
-  const map = new Map<string, Project[]>()
-  const loose: Project[] = []
-  for (const p of projects) {
-    if (p.folder) map.set(p.folder, [...(map.get(p.folder) ?? []), p])
-    else loose.push(p)
-  }
-  const folders = [...map.entries()].map(([name, ps]) => ({ name, projects: ps })).sort((a, b) => a.name.localeCompare(b.name))
-  return { folders, loose }
+  return { creator, projects, sections: groupByKind(projects) }
 }

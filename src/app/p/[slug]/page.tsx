@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
-import { ProjectSheet } from '@/components/ProjectSheet'
+import { ProjectPage } from '@/components/ProjectPage'
 import { loadProject, loadProjects } from '@/lib/content'
 
 type Params = { params: Promise<{ slug: string }> }
@@ -30,9 +30,9 @@ function tryLoad(slug: string) {
   }
 }
 
-export default async function ProjectPage({ params }: Params) {
+export default async function Page({ params }: Params) {
   const { slug } = await params
   const project = tryLoad(slug)
   if (!project) notFound()
-  return <ProjectSheet project={project} modal={false} />
+  return <ProjectPage project={project} />
 }

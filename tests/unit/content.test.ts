@@ -2,7 +2,7 @@ import fs from 'node:fs'
 import os from 'node:os'
 import path from 'node:path'
 import { afterEach, beforeEach, describe, expect, it } from 'vitest'
-import { ContentError, groupFolders, isNewRelease, loadHub, loadProject, loadProjects } from '@/lib/content'
+import { ContentError, groupByKind, isNewRelease, loadHub, loadProject, loadProjects } from '@/lib/content'
 
 let root: string
 let contentDir: string
@@ -35,7 +35,7 @@ beforeEach(() => {
   fs.mkdirSync(contentDir)
   fs.writeFileSync(
     path.join(contentDir, 'creator.json'),
-    JSON.stringify({ name: 'Me', handle: '@me', tagline: 'hi', avatar: '/a.svg', dock: ['thing'] }),
+    JSON.stringify({ name: 'Me', handle: '@me', tagline: 'hi', avatar: '/a.svg' }),
   )
 })
 afterEach(() => fs.rmSync(root, { recursive: true, force: true }))
@@ -82,29 +82,23 @@ describe('loadProject', () => {
 })
 
 describe('loadProjects / loadHub', () => {
-  it('sorts newest first and groups folders', () => {
-    writeProject('old', { ...good, date: '2025-01-01', folder: 'Games' })
+  it('sorts newest first and groups by kind in display order', () => {
+    writeProject('old-tool', { ...good, date: '2025-01-01', kind: 'tool' })
     writeProject('thing', { ...good, date: '2026-01-01' })
-    writeProject('mid', { ...good, date: '2025-06-01', folder: 'Games' })
+    writeProject('mid-game', { ...good, date: '2025-06-01', kind: 'game' })
     const projects = loadProjects({ contentDir, publicDir })
-    expect(projects.map((p) => p.slug)).toEqual(['thing', 'mid', 'old'])
-    const { folders, loose } = groupFolders(projects)
-    expect(folders).toHaveLength(1)
-    expect(folders[0].name).toBe('Games')
-    expect(folders[0].projects.map((p) => p.slug)).toEqual(['mid', 'old'])
-    expect(loose.map((p) => p.slug)).toEqual(['thing'])
+    expect(projects.map((p) => p.slug)).toEqual(['thing', 'mid-game', 'old-tool'])
+    const sections = groupByKind(projects)
+    expect(sections.map((s) => s.label)).toEqual(['Games', 'Apps', 'Tools'])
+    expect(sections[1].projects.map((p) => p.slug)).toEqual(['thing'])
   })
 
-  it('resolves the dock and rejects unknown dock slugs', () => {
+  it('loadHub returns creator, projects and non-empty sections', () => {
     writeProject('thing', good)
     const hub = loadHub({ contentDir, publicDir })
-    expect(hub.dock.map((p) => p.slug)).toEqual(['thing'])
-
-    fs.writeFileSync(
-      path.join(contentDir, 'creator.json'),
-      JSON.stringify({ name: 'Me', handle: '@me', tagline: 'hi', avatar: '/a.svg', dock: ['ghost'] }),
-    )
-    expect(() => loadHub({ contentDir, publicDir })).toThrow(/dock refers to unknown project "ghost"/)
+    expect(hub.creator.name).toBe('Me')
+    expect(hub.sections).toHaveLength(1)
+    expect(hub.sections[0].kind).toBe('app')
   })
 })
 

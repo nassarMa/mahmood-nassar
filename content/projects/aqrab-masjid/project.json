@@ -3,12 +3,18 @@
   "tagline": "Find the nearest place to pray, wherever you are.",
   "url": "https://aqrab-masjid.vercel.app",
   "kind": "app",
-  "tags": ["maps", "location", "arabic", "utility"],
-  "folder": "Tools",
+  "tags": [
+    "maps",
+    "location",
+    "arabic",
+    "utility"
+  ],
   "date": "2026-09-20",
   "status": "live",
   "lang": "ar",
   "featured": true,
   "icon": "icon.svg",
-  "media": { "cover": "cover.png" }
+  "media": {
+    "cover": "cover.png"
+  }
 }

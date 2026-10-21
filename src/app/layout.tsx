@@ -23,13 +23,10 @@ export const viewport: Viewport = {
   viewportFit: 'cover',
 }
 
-export default function RootLayout({ children, sheet }: { children: React.ReactNode; sheet: React.ReactNode }) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
-      <body>
-        {children}
-        {sheet}
-      </body>
+      <body>{children}</body>
     </html>
   )
 }
