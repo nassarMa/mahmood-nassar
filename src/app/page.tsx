@@ -2,29 +2,28 @@ import type { CSSProperties } from 'react'
 import { Footer } from '@/components/Footer'
 import { Hero } from '@/components/Hero'
 import { ProjectCard } from '@/components/ProjectCard'
-import { Spotlight } from '@/components/Spotlight'
+import { PointerGlow } from '@/components/PointerGlow'
 import { TopBar } from '@/components/TopBar'
 import { loadHub } from '@/lib/content'
 
 export default function Home() {
   const { creator, sections, projects } = loadHub()
-  const latest = projects[0]
   const fewProjects = projects.length <= 4 && sections.length > 1
   return (
     <>
       <TopBar creator={creator} />
       <main id="main">
         <Hero creator={creator} projects={projects} />
-        {latest ? <Spotlight project={latest} /> : <p className="mt-10 text-center text-muted">Nothing here yet. Check back soon.</p>}
-        <div id="projects" className="mx-auto mt-24 w-[min(100%-2rem,72rem)] scroll-mt-24 px-1">
+        {projects.length === 0 ? <p className="mt-10 text-center text-muted">Nothing here yet. Check back soon.</p> : null}
+        <div id="projects" className="mx-auto mt-16 w-[min(100%-2rem,76rem)] scroll-mt-24 px-1 sm:mt-24">
           <p className="text-[13px] font-medium tracking-wide text-violet">Everything I&apos;ve shipped</p>
-          <p className="mt-2 text-[32px] leading-tight font-semibold tracking-tight sm:text-[44px]">
-            All projects, <span className="text-aurora font-serif font-normal italic">ready to try</span>
+          <p className="mt-2 text-[34px] leading-[1.05] font-semibold tracking-[-0.035em] sm:text-[52px]">
+            All projects, <span className="text-aurora">ready to try.</span>
           </p>
         </div>
         {/* With only a few projects, wide screens put the sections side by side, each as wide as its cards. */}
         <div
-          className={`mx-auto mt-10 w-[min(100%-2rem,72rem)] ${fewProjects ? 'lg:grid lg:gap-5 lg:[grid-template-columns:var(--cols)]' : ''}`}
+          className={`mx-auto mt-10 w-[min(100%-2rem,76rem)] ${fewProjects ? 'lg:grid lg:gap-5 lg:[grid-template-columns:var(--cols)]' : ''}`}
           style={{ '--cols': sections.map((s) => `${s.projects.length}fr`).join(' ') } as CSSProperties}
         >
           {sections.map((section) => (
@@ -45,6 +44,7 @@ export default function Home() {
         </div>
       </main>
       <Footer creator={creator} />
+      <PointerGlow />
     </>
   )
 }

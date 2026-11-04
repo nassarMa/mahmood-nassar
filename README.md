@@ -49,10 +49,10 @@ trackers.
 `content/creator.json` holds the name, handle, tagline, avatar and social
 links shown in the top bar (`null` hides a link), plus an optional
 `headline`: the big line at the top of the home page. Words wrapped in
-`*asterisks*` are set in the serif italic with the aurora gradient.
+`*asterisks*` get the aurora gradient.
 
-The newest project is shown as the "Latest release" spotlight, with its
-cover screenshot in a phone frame.
+The hero shows the newest projects' cover screenshots as floating phones;
+the front one, the latest release, links to its page.
 
 ## Development
 

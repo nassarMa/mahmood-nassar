@@ -23,7 +23,6 @@
   --color-new: #4fe0b6;
 
   --font-sans: var(--font-geist), var(--font-plex-arabic), ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
-  --font-serif: var(--font-instrument), ui-serif, Georgia, serif;
   --font-arabic: var(--font-plex-arabic), var(--font-geist), ui-sans-serif, system-ui, sans-serif;
 
   --radius-icon: 23%;
@@ -94,7 +93,7 @@ body {
 
 /* Gradient text for the hero accent words. */
 .text-aurora {
-  background: linear-gradient(100deg, #c9c1ff 0%, #8b7cff 30%, #5ab8ff 65%, #4fe0b6 100%);
+  background: linear-gradient(95deg, #b9adff 0%, #8b7cff 25%, #5ab8ff 60%, #4fe0b6 100%);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
@@ -126,6 +125,36 @@ body {
     transform 260ms cubic-bezier(0.2, 0.7, 0.2, 1),
     border-color 260ms ease,
     box-shadow 260ms ease;
+}
+/* The pointer lights the card where it is, and the border picks up the glow. */
+.card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  opacity: 0;
+  background: radial-gradient(420px circle at var(--mx, 50%) var(--my, 0%), color-mix(in oklab, var(--accent) 22%, transparent), transparent 60%);
+  transition: opacity 300ms ease;
+}
+.card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  opacity: 0;
+  pointer-events: none;
+  background: radial-gradient(300px circle at var(--mx, 50%) var(--my, 0%), color-mix(in oklab, var(--accent) 85%, white), transparent 70%);
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  transition: opacity 300ms ease;
+}
+.card:hover::before,
+.card:hover::after {
+  opacity: 1;
 }
 .card:hover {
   transform: translateY(-4px);
@@ -256,6 +285,16 @@ body {
 .rise {
   animation: rise 700ms cubic-bezier(0.2, 0.7, 0.2, 1) both;
   animation-delay: calc(var(--i, 0) * 80ms);
+}
+
+/* The hero phones drift gently. */
+@keyframes float {
+  50% {
+    translate: 0 -10px;
+  }
+}
+.float {
+  animation: float 6s ease-in-out infinite;
 }
 
 /* The pulsing "live" dot. */

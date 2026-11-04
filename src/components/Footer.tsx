@@ -3,7 +3,7 @@ import { GithubIcon } from './icons'
 
 export function Footer({ creator }: { creator: Creator }) {
   return (
-    <footer className="mx-auto mt-24 w-[min(100%-2.5rem,72rem)] border-t border-line pt-8 pb-[max(env(safe-area-inset-bottom),2.5rem)]">
+    <footer className="mx-auto mt-24 w-[min(100%-2.5rem,76rem)] border-t border-line pt-8 pb-[max(env(safe-area-inset-bottom),2.5rem)]">
       <div className="flex flex-col items-center justify-between gap-4 text-center sm:flex-row sm:text-start">
         <div className="flex items-center gap-3">
           {/* eslint-disable-next-line @next/next/no-img-element */}

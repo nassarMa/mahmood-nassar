@@ -7,6 +7,7 @@ import { Footer } from './Footer'
 import { ArrowIcon, ChevronLeft } from './icons'
 import { NewBadge } from './ProjectCard'
 import { Phone } from './Phone'
+import { PointerGlow } from './PointerGlow'
 import { TopBar } from './TopBar'
 
 const month = (date: string) => new Date(`${date}T00:00:00Z`).toLocaleDateString('en-GB', { month: 'long', year: 'numeric', timeZone: 'UTC' })
@@ -24,7 +25,7 @@ export function ProjectPage({ project }: { project: Project }) {
   return (
     <>
       <TopBar creator={creator} />
-      <main id="main" className="mx-auto w-[min(100%-2rem,72rem)]" style={{ '--accent': project.accent } as CSSProperties}>
+      <main id="main" className="mx-auto w-[min(100%-2rem,76rem)]" style={{ '--accent': project.accent } as CSSProperties}>
         <nav className="pt-8">
           <Link href="/" className="inline-flex min-h-11 items-center gap-1.5 rounded-full pe-3 text-[14.5px] text-muted transition hover:text-text">
             <ChevronLeft className="text-[16px] rtl:-scale-x-100" />
@@ -105,6 +106,7 @@ export function ProjectPage({ project }: { project: Project }) {
         </article>
       </main>
       <Footer creator={creator} />
+      <PointerGlow />
     </>
   )
 }
