@@ -1,0 +1,21 @@
+{
+  "title": "منشئ مواقع المطاعم",
+  "tagline": "Snap a photo of your menu and get a real restaurant website, built by AI in minutes.",
+  "url": "https://restaurant-builder-seven.vercel.app",
+  "kind": "app",
+  "tags": [
+    "ai",
+    "websites",
+    "restaurants",
+    "arabic",
+    "hebrew"
+  ],
+  "date": "2026-10-25",
+  "status": "live",
+  "lang": "ar",
+  "featured": true,
+  "icon": "icon.svg",
+  "media": {
+    "cover": "cover.png"
+  }
+}
