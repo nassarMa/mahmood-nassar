@@ -1,21 +1,31 @@
 @import 'tailwindcss';
 
+/*
+ * Midnight studio: a deep ink background lit by a soft aurora (violet, blue,
+ * teal), fine grain, hairline glass panels, and each project glowing in its
+ * own brand colour (set per card as --accent from project.json).
+ */
 @theme {
-  --color-bg: #07090f;
-  --color-bg-2: #0e1220;
-  --color-glass: rgba(255, 255, 255, 0.07);
-  --color-glass-strong: rgba(255, 255, 255, 0.12);
-  --color-line: rgba(255, 255, 255, 0.1);
-  --color-line-strong: rgba(255, 255, 255, 0.2);
-  --color-text: #f3f4f8;
-  --color-muted: #a6abbd;
-  --color-faint: #6f7589;
-  --color-accent: #7c9cff;
-  --color-new: #34d399;
+  --color-bg: #05060d;
+  --color-bg-2: #0b0d1a;
+  --color-panel: rgba(255, 255, 255, 0.035);
+  --color-panel-strong: rgba(255, 255, 255, 0.06);
+  --color-glass: rgba(255, 255, 255, 0.06);
+  --color-line: rgba(255, 255, 255, 0.08);
+  --color-line-strong: rgba(255, 255, 255, 0.16);
+  --color-text: #f4f4f8;
+  --color-muted: #a3a7bb;
+  --color-faint: #6b7087;
+  --color-violet: #8b7cff;
+  --color-sky: #5ab8ff;
+  --color-mint: #4fe0b6;
+  --color-accent: #8b7cff;
+  --color-new: #4fe0b6;
 
-  --font-sans: ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', 'Noto Sans Arabic', sans-serif;
+  --font-sans: var(--font-geist), var(--font-plex-arabic), ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --font-arabic: var(--font-plex-arabic), var(--font-geist), ui-sans-serif, system-ui, sans-serif;
 
-  --radius-icon: 22%;
+  --radius-icon: 23%;
 }
 
 :root {
@@ -24,35 +34,134 @@
 
 html,
 body {
-  height: 100%;
+  min-height: 100%;
 }
 
 body {
   @apply bg-bg text-text font-sans antialiased;
-  background-image:
-    radial-gradient(60% 40% at 20% 0%, rgba(124, 156, 255, 0.22), transparent 70%),
-    radial-gradient(50% 35% at 90% 20%, rgba(236, 72, 153, 0.16), transparent 70%),
-    radial-gradient(60% 50% at 50% 100%, rgba(52, 211, 153, 0.1), transparent 70%);
-  background-attachment: fixed;
+  font-feature-settings: 'ss01', 'cv11';
   overscroll-behavior-y: none;
   -webkit-tap-highlight-color: transparent;
 }
 
+/* The aurora and grain sit behind everything, fixed to the viewport. */
+.backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(55% 45% at 12% -5%, rgba(139, 124, 255, 0.28), transparent 70%),
+    radial-gradient(45% 40% at 95% 5%, rgba(90, 184, 255, 0.2), transparent 70%),
+    radial-gradient(50% 45% at 60% 105%, rgba(79, 224, 182, 0.1), transparent 70%),
+    linear-gradient(180deg, #070817 0%, #05060d 60%);
+}
+.backdrop::before {
+  /* a faint grid, fading out towards the bottom */
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.035) 1px, transparent 1px);
+  background-size: 64px 64px;
+  mask-image: radial-gradient(80% 60% at 50% 0%, #000 30%, transparent 80%);
+}
+.backdrop::after {
+  /* film grain keeps the gradients from banding */
+  content: '';
+  position: absolute;
+  inset: 0;
+  opacity: 0.06;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
 ::selection {
-  background: color-mix(in oklab, var(--color-accent) 40%, transparent);
+  background: color-mix(in oklab, var(--color-violet) 45%, transparent);
 }
 
 :focus-visible {
-  outline: 2px solid var(--color-accent);
+  outline: 2px solid var(--color-violet);
   outline-offset: 3px;
+  border-radius: 12px;
 }
 
-/* Frosted panels: top bar, dock, folder overlay, sheet. */
+[lang='ar'],
+[lang='he'] {
+  font-family: var(--font-arabic);
+}
+
+/* Gradient text for the hero accent words. */
+.text-aurora {
+  background: linear-gradient(95deg, #b9adff 0%, #8b7cff 25%, #5ab8ff 60%, #4fe0b6 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Frosted panel with a hairline that brightens at the top edge. */
 .glass {
-  background: var(--color-glass);
+  position: relative;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.055), rgba(255, 255, 255, 0.02));
   border: 1px solid var(--color-line);
-  backdrop-filter: blur(24px) saturate(160%);
-  -webkit-backdrop-filter: blur(24px) saturate(160%);
+  backdrop-filter: blur(20px) saturate(150%);
+  -webkit-backdrop-filter: blur(20px) saturate(150%);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);
+}
+
+/* A project card: tinted by its own brand colour, lifts and glows on hover. */
+.card {
+  --accent: var(--color-violet);
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  border-radius: 28px;
+  border: 1px solid var(--color-line);
+  background:
+    radial-gradient(120% 70% at 50% 0%, color-mix(in oklab, var(--accent) 22%, transparent), transparent 70%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.015));
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.07), 0 30px 60px -40px rgba(0, 0, 0, 0.8);
+  transition:
+    transform 260ms cubic-bezier(0.2, 0.7, 0.2, 1),
+    border-color 260ms ease,
+    box-shadow 260ms ease;
+}
+/* The pointer lights the card where it is, and the border picks up the glow. */
+.card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  opacity: 0;
+  background: radial-gradient(420px circle at var(--mx, 50%) var(--my, 0%), color-mix(in oklab, var(--accent) 22%, transparent), transparent 60%);
+  transition: opacity 300ms ease;
+}
+.card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  opacity: 0;
+  pointer-events: none;
+  background: radial-gradient(300px circle at var(--mx, 50%) var(--my, 0%), color-mix(in oklab, var(--accent) 85%, white), transparent 70%);
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  transition: opacity 300ms ease;
+}
+.card:hover::before,
+.card:hover::after {
+  opacity: 1;
+}
+.card:hover {
+  transform: translateY(-4px);
+  border-color: color-mix(in oklab, var(--accent) 40%, var(--color-line));
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.09),
+    0 40px 80px -40px color-mix(in oklab, var(--accent) 45%, transparent);
 }
 
 /* App icon: rounded square with a soft inner highlight. */
@@ -61,12 +170,148 @@ body {
   border-radius: var(--radius-icon);
   overflow: hidden;
   box-shadow:
-    0 10px 24px rgba(0, 0, 0, 0.45),
+    0 12px 28px -8px rgba(0, 0, 0, 0.6),
+    0 0 0 1px rgba(255, 255, 255, 0.08),
     inset 0 1px 0 rgba(255, 255, 255, 0.18);
-  transition: transform 140ms ease-out;
 }
-.app-icon:active {
-  transform: scale(0.92);
+
+/* A phone frame around an app screenshot. */
+.phone {
+  position: relative;
+  aspect-ratio: 390 / 844;
+  border-radius: 44px;
+  padding: 9px;
+  background: linear-gradient(160deg, #2a2d3a, #0d0f16 40%, #1b1d27);
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.12),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.06),
+    0 50px 90px -30px rgba(0, 0, 0, 0.85),
+    0 30px 80px -40px color-mix(in oklab, var(--accent, #8b7cff) 60%, transparent);
+}
+.phone::before {
+  /* the island */
+  content: '';
+  position: absolute;
+  top: 18px;
+  left: 50%;
+  z-index: 2;
+  width: 30%;
+  height: 22px;
+  transform: translateX(-50%);
+  border-radius: 999px;
+  background: #05060a;
+}
+.phone::after {
+  /* glass reflection */
+  content: '';
+  position: absolute;
+  inset: 9px;
+  border-radius: 36px;
+  background: linear-gradient(125deg, rgba(255, 255, 255, 0.12) 0%, transparent 28%);
+  pointer-events: none;
+}
+.phone img,
+.phone video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top;
+  border-radius: 36px;
+  background: #0b0d14;
+}
+
+/* Buttons */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  min-height: 48px;
+  padding: 0 1.25rem;
+  border-radius: 999px;
+  font-weight: 600;
+  font-size: 15px;
+  transition:
+    transform 160ms ease,
+    background-color 160ms ease,
+    border-color 160ms ease,
+    box-shadow 160ms ease;
+}
+.btn:active {
+  transform: scale(0.97);
+}
+.btn-primary {
+  color: #07080f;
+  background: linear-gradient(180deg, #ffffff, #e6e7f0);
+  box-shadow:
+    0 10px 30px -12px rgba(255, 255, 255, 0.45),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.08);
+}
+.btn-primary:hover {
+  box-shadow:
+    0 14px 36px -12px rgba(255, 255, 255, 0.6),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.08);
+}
+.btn-ghost {
+  color: var(--color-text);
+  border: 1px solid var(--color-line-strong);
+  background: rgba(255, 255, 255, 0.03);
+}
+.btn-ghost:hover {
+  border-color: rgba(255, 255, 255, 0.3);
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.3rem 0.7rem;
+  border-radius: 999px;
+  font-size: 12.5px;
+  font-weight: 500;
+  color: var(--color-muted);
+  border: 1px solid var(--color-line);
+  background: rgba(255, 255, 255, 0.03);
+}
+
+/* Gentle entrance, staggered by --i. */
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+}
+.rise {
+  animation: rise 700ms cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  animation-delay: calc(var(--i, 0) * 80ms);
+}
+
+/* The hero phones drift gently. */
+@keyframes float {
+  50% {
+    translate: 0 -10px;
+  }
+}
+.float {
+  animation: float 6s ease-in-out infinite;
+}
+
+/* The pulsing "live" dot. */
+@keyframes pulse {
+  0% {
+    box-shadow: 0 0 0 0 color-mix(in oklab, var(--color-mint) 60%, transparent);
+  }
+  100% {
+    box-shadow: 0 0 0 8px transparent;
+  }
+}
+.live-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 999px;
+  background: var(--color-mint);
+  animation: pulse 1.8s ease-out infinite;
 }
 
 .hide-scrollbar {
@@ -77,19 +322,19 @@ body {
 }
 
 .prose-story :is(h1, h2, h3) {
-  @apply mt-6 mb-2 font-semibold text-text;
+  @apply mt-8 mb-2 text-[18px] font-semibold text-text;
 }
 .prose-story p {
-  @apply my-3 leading-relaxed text-muted;
+  @apply my-4 text-[16px] leading-[1.75] text-muted;
 }
 .prose-story strong {
-  @apply text-text;
+  @apply font-semibold text-text;
 }
 .prose-story a {
-  @apply text-accent underline underline-offset-4;
+  @apply text-text underline decoration-white/30 underline-offset-4 hover:decoration-white;
 }
 .prose-story :is(ul, ol) {
-  @apply my-3 list-disc pl-5 text-muted;
+  @apply my-4 list-disc ps-5 text-muted;
 }
 .prose-story code {
   @apply rounded bg-glass px-1 py-0.5 text-[0.9em];
@@ -98,6 +343,7 @@ body {
 @media (prefers-reduced-motion: reduce) {
   * {
     animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
   }
 }

@@ -13,6 +13,7 @@
   "status": "live",
   "lang": "ar",
   "featured": true,
+  "accent": "#c8ff2e",
   "icon": "icon.svg",
   "media": {
     "cover": "cover.png"

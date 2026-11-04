@@ -23,13 +23,16 @@ trackers.
   "status": "live | beta | archived",
   "lang": "en",
   "featured": false,
+  "accent": "#ff8a4c",
   "icon": "icon.svg",
   "media": { "cover": "cover.png", "demo": "demo.mp4" },
   "links": { "reel": "https://www.instagram.com/reel/…", "source": "https://github.com/…" }
 }
 ```
 
-   `kind` decides which section the card appears in. `media` and `links` are
+   `kind` decides which section the card appears in. `accent` is the app's
+   brand colour: it tints the card, the glow behind its phone screenshot and
+   its project page (default violet). `media` and `links` are
    optional. Media values are file names in `public/projects/<slug>/` or
    `https://` URLs.
 
@@ -44,7 +47,12 @@ trackers.
    within each section.
 
 `content/creator.json` holds the name, handle, tagline, avatar and social
-links shown in the top bar (`null` hides a link).
+links shown in the top bar (`null` hides a link), plus an optional
+`headline`: the big line at the top of the home page. Words wrapped in
+`*asterisks*` get the aurora gradient.
+
+The hero shows the newest projects' cover screenshots as floating phones;
+the front one, the latest release, links to its page.
 
 ## Development
 
