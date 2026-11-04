@@ -31,6 +31,11 @@ export const projectSchema = z.object({
   status: z.enum(['live', 'beta', 'archived']).default('live'),
   lang: z.string().min(2).max(5).default('en'),
   featured: z.boolean().default(false),
+  /** The app's brand colour (#rrggbb): tints its card, glow and page. */
+  accent: z
+    .string()
+    .regex(/^#[0-9a-fA-F]{6}$/, 'must be a #rrggbb colour')
+    .default('#8b7cff'),
   icon: mediaRef,
   media: z
     .object({
@@ -50,6 +55,8 @@ export const creatorSchema = z.object({
   name: z.string().min(1).max(60),
   handle: z.string().min(1).max(40),
   tagline: z.string().min(1).max(140),
+  /** The big line at the top of the home page; the tagline is used when absent. */
+  headline: z.string().min(1).max(80).optional(),
   avatar: z.string().min(1),
   links: z.record(z.string(), z.string().nullable()).default({}),
 })

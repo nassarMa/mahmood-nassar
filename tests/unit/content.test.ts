@@ -53,6 +53,15 @@ describe('loadProject', () => {
     expect(p.isNew).toBe(true)
   })
 
+  it('gives every project a brand colour, and rejects one that is not #rrggbb', () => {
+    writeProject('plain', good)
+    expect(loadProject('plain', { contentDir, publicDir }).accent).toBe('#8b7cff')
+    writeProject('tinted', { ...good, accent: '#ff8a4c' })
+    expect(loadProject('tinted', { contentDir, publicDir }).accent).toBe('#ff8a4c')
+    writeProject('badcolour', { ...good, accent: 'orange' })
+    expect(() => loadProject('badcolour', { contentDir, publicDir })).toThrow(/accent: must be a #rrggbb colour/)
+  })
+
   it('names the file and field on a schema error', () => {
     writeProject('bad', { ...good, url: 'http://insecure.example' })
     expect(() => loadProject('bad', { contentDir, publicDir })).toThrow(/content\/projects\/bad\/project.json[\s\S]*url: must be https/)

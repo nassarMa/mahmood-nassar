@@ -47,8 +47,8 @@ export default async function Image({ params }: { params: Promise<{ slug: string
           flexDirection: 'column',
           justifyContent: 'flex-end',
           padding: 72,
-          color: '#f3f4f8',
-          background: 'linear-gradient(135deg, #0e1220 0%, #07090f 60%)',
+          color: '#f4f4f8',
+          background: 'linear-gradient(160deg, #0b0d1a 0%, #05060d 65%)',
           fontFamily: 'IBM Plex Sans Arabic, sans-serif',
         }}
       >
@@ -60,15 +60,15 @@ export default async function Image({ params }: { params: Promise<{ slug: string
             width: 700,
             height: 700,
             borderRadius: 9999,
-            background: 'radial-gradient(circle, rgba(124,156,255,0.35), transparent 65%)',
+            background: `radial-gradient(circle, ${p.accent}66, transparent 65%)`,
           }}
         />
-        <div style={{ display: 'flex', fontSize: 28, color: '#a6abbd', letterSpacing: 2, textTransform: 'uppercase' }}>
+        <div style={{ display: 'flex', fontSize: 28, color: '#a3a7bb', letterSpacing: 2, textTransform: 'uppercase' }}>
           {kindLabel[p.kind]}
           {p.isNew ? ' · New' : ''}
         </div>
         <div style={{ display: 'flex', fontSize: 92, fontWeight: 700, marginTop: 12, lineHeight: 1.1 }}>{title}</div>
-        <div style={{ display: 'flex', fontSize: 36, color: '#a6abbd', marginTop: 20 }}>{tagline}</div>
+        <div style={{ display: 'flex', fontSize: 36, color: '#a3a7bb', marginTop: 20 }}>{tagline}</div>
       </div>
     ),
     {

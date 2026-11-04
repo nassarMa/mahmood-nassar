@@ -1,26 +1,50 @@
+import type { CSSProperties } from 'react'
+import { Footer } from '@/components/Footer'
+import { Hero } from '@/components/Hero'
 import { ProjectCard } from '@/components/ProjectCard'
+import { Spotlight } from '@/components/Spotlight'
 import { TopBar } from '@/components/TopBar'
 import { loadHub } from '@/lib/content'
 
 export default function Home() {
   const { creator, sections, projects } = loadHub()
+  const latest = projects[0]
+  const fewProjects = projects.length <= 4 && sections.length > 1
   return (
-    <main id="main" className="mx-auto w-full max-w-md px-4 pb-10">
+    <>
       <TopBar creator={creator} />
-      {projects.length === 0 && <p className="mt-10 text-center text-muted">Nothing here yet. Check back soon.</p>}
-      {sections.map((section) => (
-        <section key={section.kind} aria-labelledby={`h-${section.kind}`} className="mt-6">
-          <h2 id={`h-${section.kind}`} className="mb-3 px-1 text-[13px] font-semibold uppercase tracking-[0.12em] text-faint">
-            {section.label}
-          </h2>
-          <ul className="flex flex-col gap-3">
-            {section.projects.map((p) => (
-              <ProjectCard key={p.slug} project={p} />
-            ))}
-          </ul>
-        </section>
-      ))}
-      <p className="mt-10 text-center text-[12px] text-faint">New things land here first. Come back soon.</p>
-    </main>
+      <main id="main">
+        <Hero creator={creator} projects={projects} />
+        {latest ? <Spotlight project={latest} /> : <p className="mt-10 text-center text-muted">Nothing here yet. Check back soon.</p>}
+        <div id="projects" className="mx-auto mt-24 w-[min(100%-2rem,72rem)] scroll-mt-24 px-1">
+          <p className="text-[13px] font-medium tracking-wide text-violet">Everything I&apos;ve shipped</p>
+          <p className="mt-2 text-[32px] leading-tight font-semibold tracking-tight sm:text-[44px]">
+            All projects, <span className="text-aurora font-serif font-normal italic">ready to try</span>
+          </p>
+        </div>
+        {/* With only a few projects, wide screens put the sections side by side, each as wide as its cards. */}
+        <div
+          className={`mx-auto mt-10 w-[min(100%-2rem,72rem)] ${fewProjects ? 'lg:grid lg:gap-5 lg:[grid-template-columns:var(--cols)]' : ''}`}
+          style={{ '--cols': sections.map((s) => `${s.projects.length}fr`).join(' ') } as CSSProperties}
+        >
+          {sections.map((section) => (
+            <section key={section.kind} aria-labelledby={`h-${section.kind}`} className={fewProjects ? 'mt-14 first:mt-0 lg:mt-0' : 'mt-14 first:mt-0'}>
+              <h2 id={`h-${section.kind}`} className="mb-5 px-1 text-[13px] font-semibold tracking-[0.16em] text-faint uppercase">
+                {section.label}
+              </h2>
+              <ul
+                className={`grid gap-5 sm:grid-cols-2 ${fewProjects ? 'lg:[grid-template-columns:var(--inner)]' : 'lg:grid-cols-3'}`}
+                style={{ '--inner': `repeat(${section.projects.length}, minmax(0, 1fr))` } as CSSProperties}
+              >
+                {section.projects.map((p, i) => (
+                  <ProjectCard key={p.slug} project={p} index={i} />
+                ))}
+              </ul>
+            </section>
+          ))}
+        </div>
+      </main>
+      <Footer creator={creator} />
+    </>
   )
 }
